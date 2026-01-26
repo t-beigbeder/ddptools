@@ -1,0 +1,42 @@
+[build-system]
+requires = ["hatchling >= 1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ddpbasics"
+version = "0.1"
+authors = [
+  { name="thierry_otvl", email="tbeigbeder.nospam@gmail.com" },
+]
+description = "This is ddpbasics"
+readme = "README.md"
+requires-python = ">=3.13"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "LicenseRef-EUPL-1.2-or-later"
+license-files = ["LICENSE.md"]
+dependencies = [
+  "cryptography>=46.0.3,<47",
+  "PyYAML>=6.0.3,<7",
+  "pyxdg<1",
+]
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+     "/tmp",
+]
+
+[project.urls]
+Homepage = "https://github.com/t-beigbeder/ddptools"
+
+[tool.pytest]
+log_cli = false
+log_cli_level = "INFO"
+log_cli_format = "%(asctime)s %(name)s %(levelname)-8s %(message)s"
+log_date_format = "%Y-%m-%d %H:%M:%S"
+
+[[tool.mypy.overrides]]
+module = ["xdg.*"]
+follow_untyped_imports = true

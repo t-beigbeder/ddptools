@@ -1,0 +1,5 @@
+coverage
+flake8
+pytest
+mypy
+build

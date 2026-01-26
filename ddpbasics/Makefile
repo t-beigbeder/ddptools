@@ -1,0 +1,37 @@
+all:
+	@echo "nothing is done when 'all' is done, try make help"
+help:	## show this help
+	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
+
+VENV := $(shell if [ -z "${VENV}" ] ; then echo /local/venvs/ddpbasics ; else echo ${VENV} ; fi)
+
+.PHONY: venv
+venv:	## create a virtualenv and install dependencies
+venv: export PIP_NO_CACHE_DIR=1
+venv: export PIPENV_VERBOSITY=-1
+venv:
+	virtualenv $(VENV)
+	$(VENV)/bin/pip install -r requirements.txt -r requirements-dev.txt
+
+.PHONY: qa
+qa: export PYTEST_FAST=1
+qa:	## launch QA tests
+	$(VENV)/bin/flake8 src
+	@echo skip $(VENV)/bin/pytest src/
+	$(VENV)/bin/coverage run --source=src/ -m pytest src/
+	$(VENV)/bin/coverage report
+	$(VENV)/bin/mypy src
+
+.PHONY: build
+build:	## builds a python package
+	$(VENV)/bin/python -m build -o /tools/pip_repo/ddpbasics
+
+.PHONY: mypy
+mypy:	## launch QA tests on mypy only
+	$(VENV)/bin/mypy src
+
+.PHONY: coverage
+coverage: export PYTEST_FAST=1
+coverage:	## launch QA tests for HTML coverage only
+	$(VENV)/bin/coverage run --source=src/ -m pytest src/
+	$(VENV)/bin/coverage html
