@@ -1,0 +1,61 @@
+[build-system]
+requires = ["hatchling >= 1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "otvl_general"
+version = "0.13"
+authors = [
+  { name="thierry_otvl", email="tbeigbeder.nospam@gmail.com" },
+]
+description = "This is otvl_general"
+readme = "README.md"
+requires-python = ">=3.13"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "LicenseRef-EUPL-1.2-or-later"
+license-files = ["LICENSE.md"]
+dependencies = [
+  "cryptography>=46.0.3,<47",
+  "PyYAML>=6.0.3,<7",
+  "pyxdg<1",
+  "boto3>=1.42,<2",
+  "psycopg[binary]>=3.3,<3.4",
+  "grpcio>=1.76,<1.77",
+  "grpcio-tools>=1.76,<1.77"
+]
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+     "/tmp",
+]
+
+[project.urls]
+Homepage = "https://blog.otvl.org"
+
+[tool.pytest]
+log_cli = false
+log_cli_level = "INFO"
+log_cli_format = "%(asctime)s %(name)s %(levelname)-8s %(message)s"
+log_date_format = "%Y-%m-%d %H:%M:%S"
+
+[[tool.mypy.overrides]]
+module = ["xdg.*"]
+follow_untyped_imports = true
+
+[[tool.mypy.overrides]]
+module = ["boto3.*"]
+follow_untyped_imports = true
+
+[[tool.mypy.overrides]]
+module = ["botocore.*"]
+follow_untyped_imports = true
+
+[tool.coverage.run]
+omit = [
+    "src/otvl_general/utils/estore_client.py",
+    "*_pb2.py",
+    "*_pb2_grpc.py"
+    ]

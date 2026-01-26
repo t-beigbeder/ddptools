@@ -1,0 +1,8 @@
+coverage
+flake8
+pytest
+mypy
+build
+awscli
+types-protobuf
+types-grpcio
