@@ -26,6 +26,10 @@ qa:	## launch QA tests
 build:	## builds a python package
 	$(VENV)/bin/python -m build -o $(PYPIF)
 
+.PHONY: pytest
+pytest:	## launch QA tests with pytest only
+	$(VENV)/bin/pytest src/
+
 .PHONY: mypy
 mypy:	## launch QA tests on mypy only
 	$(VENV)/bin/mypy src

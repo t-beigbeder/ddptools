@@ -2,7 +2,7 @@ import unittest
 
 from cryptography.exceptions import InvalidTag
 
-from otvl_general.utils import aes
+from . import aes
 
 
 class TestAes(unittest.TestCase):

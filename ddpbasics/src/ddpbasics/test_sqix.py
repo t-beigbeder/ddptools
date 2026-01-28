@@ -2,7 +2,7 @@ import array
 
 import pytest
 
-from otvl_general.utils.sqix import (
+from .sqix import (
     SqixFileConsumption,
     SqixFileCreation,
     SqixFileError,

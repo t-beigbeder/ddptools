@@ -2,7 +2,7 @@ import os
 
 
 def _home() -> str:
-    return os.path.expanduser("~")
+    return os.environ.get("HOME", "")
 
 
 def xdg_config_dir() -> str:

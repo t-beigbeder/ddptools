@@ -1,6 +1,6 @@
 import pytest
 
-from otvl_general.utils.files import cat, read_creds_file, read_pass_file
+from .files import cat, read_creds_file, read_pass_file
 
 
 @pytest.fixture
