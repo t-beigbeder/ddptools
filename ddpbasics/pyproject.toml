@@ -20,12 +20,6 @@ license-files = ["LICENSE.md"]
 dependencies = [
   "cryptography>=46.0.3,<47",
   "PyYAML>=6.0.3,<7",
-  "pyxdg<1",
-]
-
-[tool.hatch.build.targets.sdist]
-exclude = [
-     "/tmp",
 ]
 
 [project.urls]

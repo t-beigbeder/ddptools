@@ -4,6 +4,7 @@ help:	## show this help
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
 
 VENV := $(shell if [ -z "${VENV}" ] ; then echo /local/venvs/ddpbasics ; else echo ${VENV} ; fi)
+PYPIF := $(shell if [ -z "${PYPIF}" ] ; then echo /tools/pip_repo/ddpbasics ; else echo ${PYPIF} ; fi)
 
 .PHONY: venv
 venv:	## create a virtualenv and install dependencies
@@ -14,7 +15,6 @@ venv:
 	$(VENV)/bin/pip install -r requirements.txt -r requirements-dev.txt
 
 .PHONY: qa
-qa: export PYTEST_FAST=1
 qa:	## launch QA tests
 	$(VENV)/bin/flake8 src
 	@echo skip $(VENV)/bin/pytest src/
@@ -24,14 +24,13 @@ qa:	## launch QA tests
 
 .PHONY: build
 build:	## builds a python package
-	$(VENV)/bin/python -m build -o /tools/pip_repo/ddpbasics
+	$(VENV)/bin/python -m build -o $(PYPIF)
 
 .PHONY: mypy
 mypy:	## launch QA tests on mypy only
 	$(VENV)/bin/mypy src
 
 .PHONY: coverage
-coverage: export PYTEST_FAST=1
 coverage:	## launch QA tests for HTML coverage only
 	$(VENV)/bin/coverage run --source=src/ -m pytest src/
 	$(VENV)/bin/coverage html

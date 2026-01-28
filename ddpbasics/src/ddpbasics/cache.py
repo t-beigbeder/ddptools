@@ -5,8 +5,7 @@ import pathlib
 import threading
 from typing import Callable, IO
 
-import xdg.BaseDirectory
-
+from ddpbasics import xdg
 
 COPY_BUFSIZE = 64 * 1024
 
@@ -18,20 +17,20 @@ class HashError(Exception):
 @functools.lru_cache
 def _get_cache_path_df_for(
     name: str,
-    category="default",
-    suffix="",
+    category: str = "default",
+    suffix: str = "",
 ) -> tuple[str, str]:
     hn = hashlib.sha256(bytes(name, "utf-8")).digest().hex()
     return (
-        f"{xdg.BaseDirectory.xdg_cache_home}/otvl/data/{category}/{hn[0:3]}",
+        f"{xdg.xdg_cache_dir()}/otvl/data/{category}/{hn[0:3]}",
         f"{hn[3:]}{suffix}",
     )
 
 
 def get_cache_path_for(
     name: str,
-    category="default",
-    suffix="",
+    category: str = "default",
+    suffix: str = "",
 ) -> str:
     return "/".join(_get_cache_path_df_for(name, category, suffix))
 

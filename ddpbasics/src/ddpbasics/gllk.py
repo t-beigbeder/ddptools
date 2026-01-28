@@ -21,7 +21,7 @@ class _GlDict:
         global _gldict
         assert _gllock is not None
         self.lock = _gllock
-        self.d: dict = dict()
+        self.d: dict[typing.Any, typing.Any] = dict()
         assert _gldict is None
         _gldict = self
 
@@ -54,8 +54,8 @@ class _GlQueue:
         global _glqueue
         assert _gllock is not None
         self.lock = _gllock
-        self.queues: dict = dict()
-        self.max_value_sizes: dict = dict()
+        self.queues: dict[str, queue.Queue[bytes]] = dict()
+        self.max_value_sizes: dict[str, int] = dict()
         assert _glqueue is None
         _glqueue = self
 
