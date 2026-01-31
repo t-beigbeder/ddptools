@@ -1,4 +1,3 @@
-import datetime
 from hashlib import sha256
 from random import randbytes
 from typing import Generator
@@ -36,11 +35,6 @@ def get_xlf(tmp_path):
     return str(ifn), sh.digest().hex()
 
 
-@pytest.fixture
-def date_of_test():
-    return str(datetime.datetime.now().timestamp())
-
-
 def _local_streamer(tn: str, fp: str) -> Generator[bytes]:
     ref = f"{tn}:{fp}"
     d = gllk.GlDict()
@@ -60,6 +54,28 @@ def test_get_cache_path_for():
     assert cache.get_cache_path_for("that/name", "this_category").endswith(
         "/otvl/data/this_category/867/183db61a257cb6bd228ac2eb092f101e41ec6c4216921b18a07ea62556848"
     )
+
+
+def test_files_cache(tmp_path, monkeypatch, get_ifs) -> None:
+    d = gllk.GlDict()
+    xdg_cad = str(tmp_path / "xdg_cad")
+    monkeypatch.setenv("XDG_CACHE_HOME", xdg_cad)
+    for i, if_ in enumerate(get_ifs):
+        streamer = _local_streamer("cnt0", if_)
+        bs = bytearray()
+        for ck in cache.cache_streamer(if_, "cat0", "", streamer):
+            bs.extend(ck)
+        assert bs.decode() == f"i{i + 1}\n"
+    for i, if_ in enumerate(get_ifs):
+        assert d.get(f"cnt0:{if_}") == 1
+    for i, if_ in enumerate(get_ifs):
+        streamer = _local_streamer("cnt0", if_)
+        bs = bytearray()
+        for ck in cache.cache_streamer(if_, "cat0", "", streamer):
+            bs.extend(ck)
+        assert bs.decode() == f"i{i + 1}\n"
+    for i, if_ in enumerate(get_ifs):
+        assert d.get(f"cnt0:{if_}") == 1
 
 
 def test_large_file_cache(tmp_path, monkeypatch, get_xlf) -> None:
