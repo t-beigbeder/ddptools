@@ -3,11 +3,14 @@ import hashlib
 import os
 import pathlib
 import threading
-from typing import Callable, IO
+from typing import Callable, Generator, IO
 
-from ddpbasics import xdg
+from ddpbasics import gllk, xdg
+
 
 COPY_BUFSIZE = 64 * 1024
+
+gllk.initialize()
 
 
 class HashError(Exception):
@@ -33,6 +36,38 @@ def get_cache_path_for(
     suffix: str = "",
 ) -> str:
     return "/".join(_get_cache_path_df_for(name, category, suffix))
+
+
+def _streamer(fp: pathlib.Path) -> Generator[bytes]:
+    with open(fp, "rb") as fd:
+        while True:
+            bs = fd.read(COPY_BUFSIZE)
+            if not len(bs):
+                return
+            yield bs
+
+
+def cache_streamer(
+    name: str, category: str, suffix: str, streamer: Generator[bytes]
+) -> Generator[bytes]:
+    cf = pathlib.Path(get_cache_path_for(name, category, suffix))
+    if cf.exists():
+        yield from _streamer(cf)
+        return
+    nl = None
+    ln = f"cache_streamer:{cf}"
+    try:
+        nl = gllk.GlDict().named_lock_get(ln)
+        cf.parent.mkdir(parents=True, exist_ok=True)
+        with cf.open("wb", buffering=COPY_BUFSIZE) as of:
+            for chunk in streamer:
+                of.write(chunk)
+                yield chunk
+    except Exception:
+        raise
+    finally:
+        if nl:
+            gllk.GlDict().named_lock_delete(ln)
 
 
 def _copy(fdst, is_binary, fsrc, length, hashes, hr):
@@ -66,6 +101,14 @@ class _FilesLock:
 @functools.cache
 def get_files_locker() -> _FilesLock:
     return _FilesLock()
+
+
+def stream_from_cache(name: str, category: str, suffix: str, streamer):
+    cp = pathlib.Path(get_cache_path_for(name, category, suffix))
+    if cp.exists():
+        with cp.open(mode="rb") as if_:
+            for bs in if_:
+                yield bs
 
 
 def _cache(

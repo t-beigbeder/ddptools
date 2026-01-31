@@ -1,5 +1,8 @@
-from .gllk import GlDict, initialize, GlQueue
+import threading
+
 import pytest
+
+from .gllk import GlDict, GlQueue, initialize
 
 
 def test_gldict() -> None:
@@ -29,3 +32,25 @@ def test_glqueue() -> None:
     assert not q.exists("a")
     q.create("a", 10, 10)
     q.shutdown("a", True)
+
+
+def test_glnamedlock() -> None:
+    def _task():
+        for c in range(10):
+            ln = f"test_glnamedlock:{c % 3}"
+            nl = None
+            try:
+                nl = d.named_lock_get(ln)
+            finally:
+                if nl:
+                    d.named_lock_delete(ln)
+
+    initialize()
+    d = GlDict()
+    ts = []
+    for i in range(10):
+        t = threading.Thread(target=_task)
+        ts.append(t)
+        t.start()
+    for t in ts:
+        t.join()

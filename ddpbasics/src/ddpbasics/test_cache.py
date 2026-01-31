@@ -1,7 +1,11 @@
+import datetime
+from hashlib import sha256
+from random import randbytes
 from typing import Generator
+
 import pytest
 
-from . import cache
+from . import cache, gllk
 
 
 # Use cases
@@ -13,16 +17,42 @@ from . import cache
 def get_ifs(tmp_path):
     def _gif(if_name):
         ifn = tmp_path / if_name
-        with open(ifn, "w") as if_:
-            if_.write(f"{if_name}\n")
+        with open(ifn, "wb") as if_:
+            if_.write(f"{if_name}\n".encode())
         return str(ifn)
 
     return [_gif("i" + n) for n in ["1", "2", "3", "4", "5"]]
 
 
-def lazy_open(fp: str) -> Generator[bytes]:
+@pytest.fixture
+def get_xlf(tmp_path):
+    sh = sha256()
+    ifn = tmp_path / "xlf"
+    with open(ifn, "wb") as if_:
+        for _ in range(10):
+            bs = randbytes(1024 * 1024)
+            sh.update(bs)
+            if_.write(bs)
+    return str(ifn), sh.digest().hex()
+
+
+@pytest.fixture
+def date_of_test():
+    return str(datetime.datetime.now().timestamp())
+
+
+def _local_streamer(tn: str, fp: str) -> Generator[bytes]:
+    ref = f"{tn}:{fp}"
+    d = gllk.GlDict()
+    if not d.exists(ref):
+        d.put(ref, 1)
+    else:
+        d.put(ref, d.get(ref) + 1)
     with open(fp, "rb") as fd:
-        for bs in fd:
+        while True:
+            bs = fd.read(128 * 1024)
+            if not len(bs):
+                return
             yield bs
 
 
@@ -32,8 +62,19 @@ def test_get_cache_path_for():
     )
 
 
-def test_lazy_open(get_ifs) -> None:
-    bs = bytes()
-    for ln in lazy_open(get_ifs[0]):
-        bs += ln
-    assert ln == "i1\n".encode()
+def test_large_file_cache(tmp_path, monkeypatch, get_xlf) -> None:
+    d = gllk.GlDict()
+    xdg_cad = str(tmp_path / "xdg_cad")
+    monkeypatch.setenv("XDG_CACHE_HOME", xdg_cad)
+    streamer = _local_streamer("cnt1", get_xlf[0])
+    h = sha256()
+    for bs in cache.cache_streamer("xlf", "cat1", "", streamer):
+        h.update(bs)
+    assert h.digest().hex() == get_xlf[1]
+    assert d.get(f"cnt1:{get_xlf[0]}") == 1
+
+    h = sha256()
+    for bs in cache.cache_streamer("xlf", "cat1", "", streamer):
+        h.update(bs)
+    assert d.get(f"cnt1:{get_xlf[0]}") == 1
+    assert h.digest().hex() == get_xlf[1]

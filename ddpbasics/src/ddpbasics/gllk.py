@@ -1,6 +1,7 @@
 import threading
 import typing
 import queue
+import logging
 
 
 _gllock: threading.Lock | None = None
@@ -38,6 +39,37 @@ class _GlDict:
 
     def get(self, k) -> typing.Any:
         return self.d[k]
+
+    def named_lock_get(self, k) -> threading.Lock:
+        acquired = False
+        while True:
+            try:
+                self.lock.acquire()
+                acquired = True
+                if k in self.d:
+                    logging.debug(f"named_lock_get {k}: already acquired")
+                    nl: threading.Lock = self.d[k]
+                    acquired = False
+                    self.lock.release()
+                    with nl:
+                        logging.debug(f"named_lock_get {k}: looping")
+                        pass
+                    continue
+                self.d[k] = threading.Lock()
+                self.d[k].acquire()
+                logging.debug(f"named_lock_get {k}: acquired")
+                return self.d[k]
+            finally:
+                if acquired:
+                    logging.debug(f"named_lock_get {k}: release global")
+                    self.lock.release()
+
+    def named_lock_delete(self, k) -> None:
+        with self.lock:
+            logging.debug(f"named_lock_delete {k}")
+            nl: threading.Lock = self.d[k]
+            nl.release()
+            del self.d[k]
 
 
 def GlDict() -> _GlDict:
