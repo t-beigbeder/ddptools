@@ -17,6 +17,7 @@ venv:
 	$(VENV)/bin/pip install -r requirements.txt -r requirements-dev.txt
 
 .PHONY: qa
+qa: export PYTEST_FAST=1
 qa:	## launch QA tests
 	$(VENV)/bin/flake8 src
 	@echo skip $(VENV)/bin/pytest src/
@@ -44,6 +45,7 @@ mypy:	## launch QA tests on mypy only
 	$(VENV)/bin/mypy src
 
 .PHONY: coverage
+coverage: export PYTEST_FAST=1
 coverage:	## launch QA tests for HTML coverage only
 	$(VENV)/bin/coverage run --source=src/ -m pytest src/
 	$(VENV)/bin/coverage html
