@@ -3,7 +3,7 @@
 import grpc
 import warnings
 
-from ddpestore import ope_pb2 as ddpestore_dot_ope__pb2
+from sfegrpc import ope_pb2 as sfegrpc_dot_ope__pb2
 
 GRPC_GENERATED_VERSION = '1.76.0'
 GRPC_VERSION = grpc.__version__
@@ -18,7 +18,7 @@ except ImportError:
 if _version_not_supported:
     raise RuntimeError(
         f'The grpc package installed is at version {GRPC_VERSION},'
-        + ' but the generated code in ddpestore/ope_pb2_grpc.py depends on'
+        + ' but the generated code in sfegrpc/ope_pb2_grpc.py depends on'
         + f' grpcio>={GRPC_GENERATED_VERSION}.'
         + f' Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}'
         + f' or downgrade your generated code using grpcio-tools<={GRPC_VERSION}.'
@@ -36,18 +36,18 @@ class OpeStub(object):
         """
         self.Ready = channel.unary_unary(
                 '/ope.Ope/Ready',
-                request_serializer=ddpestore_dot_ope__pb2.Empty.SerializeToString,
-                response_deserializer=ddpestore_dot_ope__pb2.Bool.FromString,
+                request_serializer=sfegrpc_dot_ope__pb2.Empty.SerializeToString,
+                response_deserializer=sfegrpc_dot_ope__pb2.Bool.FromString,
                 _registered_method=True)
         self.Version = channel.unary_unary(
                 '/ope.Ope/Version',
-                request_serializer=ddpestore_dot_ope__pb2.Empty.SerializeToString,
-                response_deserializer=ddpestore_dot_ope__pb2.Value.FromString,
+                request_serializer=sfegrpc_dot_ope__pb2.Empty.SerializeToString,
+                response_deserializer=sfegrpc_dot_ope__pb2.Value.FromString,
                 _registered_method=True)
         self.Shutdown = channel.unary_unary(
                 '/ope.Ope/Shutdown',
-                request_serializer=ddpestore_dot_ope__pb2.Value.SerializeToString,
-                response_deserializer=ddpestore_dot_ope__pb2.Bool.FromString,
+                request_serializer=sfegrpc_dot_ope__pb2.Value.SerializeToString,
+                response_deserializer=sfegrpc_dot_ope__pb2.Bool.FromString,
                 _registered_method=True)
 
 
@@ -77,18 +77,18 @@ def add_OpeServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'Ready': grpc.unary_unary_rpc_method_handler(
                     servicer.Ready,
-                    request_deserializer=ddpestore_dot_ope__pb2.Empty.FromString,
-                    response_serializer=ddpestore_dot_ope__pb2.Bool.SerializeToString,
+                    request_deserializer=sfegrpc_dot_ope__pb2.Empty.FromString,
+                    response_serializer=sfegrpc_dot_ope__pb2.Bool.SerializeToString,
             ),
             'Version': grpc.unary_unary_rpc_method_handler(
                     servicer.Version,
-                    request_deserializer=ddpestore_dot_ope__pb2.Empty.FromString,
-                    response_serializer=ddpestore_dot_ope__pb2.Value.SerializeToString,
+                    request_deserializer=sfegrpc_dot_ope__pb2.Empty.FromString,
+                    response_serializer=sfegrpc_dot_ope__pb2.Value.SerializeToString,
             ),
             'Shutdown': grpc.unary_unary_rpc_method_handler(
                     servicer.Shutdown,
-                    request_deserializer=ddpestore_dot_ope__pb2.Value.FromString,
-                    response_serializer=ddpestore_dot_ope__pb2.Bool.SerializeToString,
+                    request_deserializer=sfegrpc_dot_ope__pb2.Value.FromString,
+                    response_serializer=sfegrpc_dot_ope__pb2.Bool.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -116,8 +116,8 @@ class Ope(object):
             request,
             target,
             '/ope.Ope/Ready',
-            ddpestore_dot_ope__pb2.Empty.SerializeToString,
-            ddpestore_dot_ope__pb2.Bool.FromString,
+            sfegrpc_dot_ope__pb2.Empty.SerializeToString,
+            sfegrpc_dot_ope__pb2.Bool.FromString,
             options,
             channel_credentials,
             insecure,
@@ -143,8 +143,8 @@ class Ope(object):
             request,
             target,
             '/ope.Ope/Version',
-            ddpestore_dot_ope__pb2.Empty.SerializeToString,
-            ddpestore_dot_ope__pb2.Value.FromString,
+            sfegrpc_dot_ope__pb2.Empty.SerializeToString,
+            sfegrpc_dot_ope__pb2.Value.FromString,
             options,
             channel_credentials,
             insecure,
@@ -170,8 +170,8 @@ class Ope(object):
             request,
             target,
             '/ope.Ope/Shutdown',
-            ddpestore_dot_ope__pb2.Value.SerializeToString,
-            ddpestore_dot_ope__pb2.Bool.FromString,
+            sfegrpc_dot_ope__pb2.Value.SerializeToString,
+            sfegrpc_dot_ope__pb2.Bool.FromString,
             options,
             channel_credentials,
             insecure,

@@ -3,7 +3,7 @@
 import grpc
 import warnings
 
-from ddpestore import estore_pb2 as ddpestore_dot_estore__pb2
+from sfegrpc import estore_pb2 as sfegrpc_dot_estore__pb2
 
 GRPC_GENERATED_VERSION = '1.76.0'
 GRPC_VERSION = grpc.__version__
@@ -18,7 +18,7 @@ except ImportError:
 if _version_not_supported:
     raise RuntimeError(
         f'The grpc package installed is at version {GRPC_VERSION},'
-        + ' but the generated code in ddpestore/estore_pb2_grpc.py depends on'
+        + ' but the generated code in sfegrpc/estore_pb2_grpc.py depends on'
         + f' grpcio>={GRPC_GENERATED_VERSION}.'
         + f' Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}'
         + f' or downgrade your generated code using grpcio-tools<={GRPC_VERSION}.'
@@ -36,63 +36,63 @@ class EstoreStub(object):
         """
         self.Exists = channel.unary_unary(
                 '/estore.Estore/Exists',
-                request_serializer=ddpestore_dot_estore__pb2.Empty.SerializeToString,
-                response_deserializer=ddpestore_dot_estore__pb2.Bool.FromString,
+                request_serializer=sfegrpc_dot_estore__pb2.Empty.SerializeToString,
+                response_deserializer=sfegrpc_dot_estore__pb2.Bool.FromString,
                 _registered_method=True)
         self.Drop = channel.unary_unary(
                 '/estore.Estore/Drop',
-                request_serializer=ddpestore_dot_estore__pb2.DropRequest.SerializeToString,
-                response_deserializer=ddpestore_dot_estore__pb2.Bool.FromString,
+                request_serializer=sfegrpc_dot_estore__pb2.DropRequest.SerializeToString,
+                response_deserializer=sfegrpc_dot_estore__pb2.Bool.FromString,
                 _registered_method=True)
         self.Create = channel.unary_unary(
                 '/estore.Estore/Create',
-                request_serializer=ddpestore_dot_estore__pb2.CreateRequest.SerializeToString,
-                response_deserializer=ddpestore_dot_estore__pb2.Bool.FromString,
+                request_serializer=sfegrpc_dot_estore__pb2.CreateRequest.SerializeToString,
+                response_deserializer=sfegrpc_dot_estore__pb2.Bool.FromString,
                 _registered_method=True)
         self.CreateCategory = channel.unary_unary(
                 '/estore.Estore/CreateCategory',
-                request_serializer=ddpestore_dot_estore__pb2.CreateCategoryRequest.SerializeToString,
-                response_deserializer=ddpestore_dot_estore__pb2.Empty.FromString,
+                request_serializer=sfegrpc_dot_estore__pb2.CreateCategoryRequest.SerializeToString,
+                response_deserializer=sfegrpc_dot_estore__pb2.Empty.FromString,
                 _registered_method=True)
         self.StartSession = channel.unary_unary(
                 '/estore.Estore/StartSession',
-                request_serializer=ddpestore_dot_estore__pb2.Empty.SerializeToString,
-                response_deserializer=ddpestore_dot_estore__pb2.UUID.FromString,
+                request_serializer=sfegrpc_dot_estore__pb2.Empty.SerializeToString,
+                response_deserializer=sfegrpc_dot_estore__pb2.UUID.FromString,
                 _registered_method=True)
         self.RecordEntities = channel.stream_unary(
                 '/estore.Estore/RecordEntities',
-                request_serializer=ddpestore_dot_estore__pb2.Entity.SerializeToString,
-                response_deserializer=ddpestore_dot_estore__pb2.Empty.FromString,
+                request_serializer=sfegrpc_dot_estore__pb2.Entity.SerializeToString,
+                response_deserializer=sfegrpc_dot_estore__pb2.Empty.FromString,
                 _registered_method=True)
         self.EndSession = channel.unary_unary(
                 '/estore.Estore/EndSession',
-                request_serializer=ddpestore_dot_estore__pb2.UUID.SerializeToString,
-                response_deserializer=ddpestore_dot_estore__pb2.Empty.FromString,
+                request_serializer=sfegrpc_dot_estore__pb2.UUID.SerializeToString,
+                response_deserializer=sfegrpc_dot_estore__pb2.Empty.FromString,
                 _registered_method=True)
         self.ReadEntity = channel.unary_unary(
                 '/estore.Estore/ReadEntity',
-                request_serializer=ddpestore_dot_estore__pb2.ReadEntityRequest.SerializeToString,
-                response_deserializer=ddpestore_dot_estore__pb2.ReadEntityResponse.FromString,
+                request_serializer=sfegrpc_dot_estore__pb2.ReadEntityRequest.SerializeToString,
+                response_deserializer=sfegrpc_dot_estore__pb2.ReadEntityResponse.FromString,
                 _registered_method=True)
         self.ReadEntities = channel.unary_stream(
                 '/estore.Estore/ReadEntities',
-                request_serializer=ddpestore_dot_estore__pb2.ReadEntitiesRequest.SerializeToString,
-                response_deserializer=ddpestore_dot_estore__pb2.ReadEntityResponse.FromString,
+                request_serializer=sfegrpc_dot_estore__pb2.ReadEntitiesRequest.SerializeToString,
+                response_deserializer=sfegrpc_dot_estore__pb2.ReadEntityResponse.FromString,
                 _registered_method=True)
         self.StartReadSession = channel.unary_unary(
                 '/estore.Estore/StartReadSession',
-                request_serializer=ddpestore_dot_estore__pb2.ReadSessionRequest.SerializeToString,
-                response_deserializer=ddpestore_dot_estore__pb2.UUID.FromString,
+                request_serializer=sfegrpc_dot_estore__pb2.ReadSessionRequest.SerializeToString,
+                response_deserializer=sfegrpc_dot_estore__pb2.UUID.FromString,
                 _registered_method=True)
         self.ReadOnSession = channel.unary_stream(
                 '/estore.Estore/ReadOnSession',
-                request_serializer=ddpestore_dot_estore__pb2.UUID.SerializeToString,
-                response_deserializer=ddpestore_dot_estore__pb2.ReadEntityResponse.FromString,
+                request_serializer=sfegrpc_dot_estore__pb2.UUID.SerializeToString,
+                response_deserializer=sfegrpc_dot_estore__pb2.ReadEntityResponse.FromString,
                 _registered_method=True)
         self.EndReadSession = channel.unary_unary(
                 '/estore.Estore/EndReadSession',
-                request_serializer=ddpestore_dot_estore__pb2.UUID.SerializeToString,
-                response_deserializer=ddpestore_dot_estore__pb2.Empty.FromString,
+                request_serializer=sfegrpc_dot_estore__pb2.UUID.SerializeToString,
+                response_deserializer=sfegrpc_dot_estore__pb2.Empty.FromString,
                 _registered_method=True)
 
 
@@ -176,63 +176,63 @@ def add_EstoreServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'Exists': grpc.unary_unary_rpc_method_handler(
                     servicer.Exists,
-                    request_deserializer=ddpestore_dot_estore__pb2.Empty.FromString,
-                    response_serializer=ddpestore_dot_estore__pb2.Bool.SerializeToString,
+                    request_deserializer=sfegrpc_dot_estore__pb2.Empty.FromString,
+                    response_serializer=sfegrpc_dot_estore__pb2.Bool.SerializeToString,
             ),
             'Drop': grpc.unary_unary_rpc_method_handler(
                     servicer.Drop,
-                    request_deserializer=ddpestore_dot_estore__pb2.DropRequest.FromString,
-                    response_serializer=ddpestore_dot_estore__pb2.Bool.SerializeToString,
+                    request_deserializer=sfegrpc_dot_estore__pb2.DropRequest.FromString,
+                    response_serializer=sfegrpc_dot_estore__pb2.Bool.SerializeToString,
             ),
             'Create': grpc.unary_unary_rpc_method_handler(
                     servicer.Create,
-                    request_deserializer=ddpestore_dot_estore__pb2.CreateRequest.FromString,
-                    response_serializer=ddpestore_dot_estore__pb2.Bool.SerializeToString,
+                    request_deserializer=sfegrpc_dot_estore__pb2.CreateRequest.FromString,
+                    response_serializer=sfegrpc_dot_estore__pb2.Bool.SerializeToString,
             ),
             'CreateCategory': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateCategory,
-                    request_deserializer=ddpestore_dot_estore__pb2.CreateCategoryRequest.FromString,
-                    response_serializer=ddpestore_dot_estore__pb2.Empty.SerializeToString,
+                    request_deserializer=sfegrpc_dot_estore__pb2.CreateCategoryRequest.FromString,
+                    response_serializer=sfegrpc_dot_estore__pb2.Empty.SerializeToString,
             ),
             'StartSession': grpc.unary_unary_rpc_method_handler(
                     servicer.StartSession,
-                    request_deserializer=ddpestore_dot_estore__pb2.Empty.FromString,
-                    response_serializer=ddpestore_dot_estore__pb2.UUID.SerializeToString,
+                    request_deserializer=sfegrpc_dot_estore__pb2.Empty.FromString,
+                    response_serializer=sfegrpc_dot_estore__pb2.UUID.SerializeToString,
             ),
             'RecordEntities': grpc.stream_unary_rpc_method_handler(
                     servicer.RecordEntities,
-                    request_deserializer=ddpestore_dot_estore__pb2.Entity.FromString,
-                    response_serializer=ddpestore_dot_estore__pb2.Empty.SerializeToString,
+                    request_deserializer=sfegrpc_dot_estore__pb2.Entity.FromString,
+                    response_serializer=sfegrpc_dot_estore__pb2.Empty.SerializeToString,
             ),
             'EndSession': grpc.unary_unary_rpc_method_handler(
                     servicer.EndSession,
-                    request_deserializer=ddpestore_dot_estore__pb2.UUID.FromString,
-                    response_serializer=ddpestore_dot_estore__pb2.Empty.SerializeToString,
+                    request_deserializer=sfegrpc_dot_estore__pb2.UUID.FromString,
+                    response_serializer=sfegrpc_dot_estore__pb2.Empty.SerializeToString,
             ),
             'ReadEntity': grpc.unary_unary_rpc_method_handler(
                     servicer.ReadEntity,
-                    request_deserializer=ddpestore_dot_estore__pb2.ReadEntityRequest.FromString,
-                    response_serializer=ddpestore_dot_estore__pb2.ReadEntityResponse.SerializeToString,
+                    request_deserializer=sfegrpc_dot_estore__pb2.ReadEntityRequest.FromString,
+                    response_serializer=sfegrpc_dot_estore__pb2.ReadEntityResponse.SerializeToString,
             ),
             'ReadEntities': grpc.unary_stream_rpc_method_handler(
                     servicer.ReadEntities,
-                    request_deserializer=ddpestore_dot_estore__pb2.ReadEntitiesRequest.FromString,
-                    response_serializer=ddpestore_dot_estore__pb2.ReadEntityResponse.SerializeToString,
+                    request_deserializer=sfegrpc_dot_estore__pb2.ReadEntitiesRequest.FromString,
+                    response_serializer=sfegrpc_dot_estore__pb2.ReadEntityResponse.SerializeToString,
             ),
             'StartReadSession': grpc.unary_unary_rpc_method_handler(
                     servicer.StartReadSession,
-                    request_deserializer=ddpestore_dot_estore__pb2.ReadSessionRequest.FromString,
-                    response_serializer=ddpestore_dot_estore__pb2.UUID.SerializeToString,
+                    request_deserializer=sfegrpc_dot_estore__pb2.ReadSessionRequest.FromString,
+                    response_serializer=sfegrpc_dot_estore__pb2.UUID.SerializeToString,
             ),
             'ReadOnSession': grpc.unary_stream_rpc_method_handler(
                     servicer.ReadOnSession,
-                    request_deserializer=ddpestore_dot_estore__pb2.UUID.FromString,
-                    response_serializer=ddpestore_dot_estore__pb2.ReadEntityResponse.SerializeToString,
+                    request_deserializer=sfegrpc_dot_estore__pb2.UUID.FromString,
+                    response_serializer=sfegrpc_dot_estore__pb2.ReadEntityResponse.SerializeToString,
             ),
             'EndReadSession': grpc.unary_unary_rpc_method_handler(
                     servicer.EndReadSession,
-                    request_deserializer=ddpestore_dot_estore__pb2.UUID.FromString,
-                    response_serializer=ddpestore_dot_estore__pb2.Empty.SerializeToString,
+                    request_deserializer=sfegrpc_dot_estore__pb2.UUID.FromString,
+                    response_serializer=sfegrpc_dot_estore__pb2.Empty.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -260,8 +260,8 @@ class Estore(object):
             request,
             target,
             '/estore.Estore/Exists',
-            ddpestore_dot_estore__pb2.Empty.SerializeToString,
-            ddpestore_dot_estore__pb2.Bool.FromString,
+            sfegrpc_dot_estore__pb2.Empty.SerializeToString,
+            sfegrpc_dot_estore__pb2.Bool.FromString,
             options,
             channel_credentials,
             insecure,
@@ -287,8 +287,8 @@ class Estore(object):
             request,
             target,
             '/estore.Estore/Drop',
-            ddpestore_dot_estore__pb2.DropRequest.SerializeToString,
-            ddpestore_dot_estore__pb2.Bool.FromString,
+            sfegrpc_dot_estore__pb2.DropRequest.SerializeToString,
+            sfegrpc_dot_estore__pb2.Bool.FromString,
             options,
             channel_credentials,
             insecure,
@@ -314,8 +314,8 @@ class Estore(object):
             request,
             target,
             '/estore.Estore/Create',
-            ddpestore_dot_estore__pb2.CreateRequest.SerializeToString,
-            ddpestore_dot_estore__pb2.Bool.FromString,
+            sfegrpc_dot_estore__pb2.CreateRequest.SerializeToString,
+            sfegrpc_dot_estore__pb2.Bool.FromString,
             options,
             channel_credentials,
             insecure,
@@ -341,8 +341,8 @@ class Estore(object):
             request,
             target,
             '/estore.Estore/CreateCategory',
-            ddpestore_dot_estore__pb2.CreateCategoryRequest.SerializeToString,
-            ddpestore_dot_estore__pb2.Empty.FromString,
+            sfegrpc_dot_estore__pb2.CreateCategoryRequest.SerializeToString,
+            sfegrpc_dot_estore__pb2.Empty.FromString,
             options,
             channel_credentials,
             insecure,
@@ -368,8 +368,8 @@ class Estore(object):
             request,
             target,
             '/estore.Estore/StartSession',
-            ddpestore_dot_estore__pb2.Empty.SerializeToString,
-            ddpestore_dot_estore__pb2.UUID.FromString,
+            sfegrpc_dot_estore__pb2.Empty.SerializeToString,
+            sfegrpc_dot_estore__pb2.UUID.FromString,
             options,
             channel_credentials,
             insecure,
@@ -395,8 +395,8 @@ class Estore(object):
             request_iterator,
             target,
             '/estore.Estore/RecordEntities',
-            ddpestore_dot_estore__pb2.Entity.SerializeToString,
-            ddpestore_dot_estore__pb2.Empty.FromString,
+            sfegrpc_dot_estore__pb2.Entity.SerializeToString,
+            sfegrpc_dot_estore__pb2.Empty.FromString,
             options,
             channel_credentials,
             insecure,
@@ -422,8 +422,8 @@ class Estore(object):
             request,
             target,
             '/estore.Estore/EndSession',
-            ddpestore_dot_estore__pb2.UUID.SerializeToString,
-            ddpestore_dot_estore__pb2.Empty.FromString,
+            sfegrpc_dot_estore__pb2.UUID.SerializeToString,
+            sfegrpc_dot_estore__pb2.Empty.FromString,
             options,
             channel_credentials,
             insecure,
@@ -449,8 +449,8 @@ class Estore(object):
             request,
             target,
             '/estore.Estore/ReadEntity',
-            ddpestore_dot_estore__pb2.ReadEntityRequest.SerializeToString,
-            ddpestore_dot_estore__pb2.ReadEntityResponse.FromString,
+            sfegrpc_dot_estore__pb2.ReadEntityRequest.SerializeToString,
+            sfegrpc_dot_estore__pb2.ReadEntityResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -476,8 +476,8 @@ class Estore(object):
             request,
             target,
             '/estore.Estore/ReadEntities',
-            ddpestore_dot_estore__pb2.ReadEntitiesRequest.SerializeToString,
-            ddpestore_dot_estore__pb2.ReadEntityResponse.FromString,
+            sfegrpc_dot_estore__pb2.ReadEntitiesRequest.SerializeToString,
+            sfegrpc_dot_estore__pb2.ReadEntityResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -503,8 +503,8 @@ class Estore(object):
             request,
             target,
             '/estore.Estore/StartReadSession',
-            ddpestore_dot_estore__pb2.ReadSessionRequest.SerializeToString,
-            ddpestore_dot_estore__pb2.UUID.FromString,
+            sfegrpc_dot_estore__pb2.ReadSessionRequest.SerializeToString,
+            sfegrpc_dot_estore__pb2.UUID.FromString,
             options,
             channel_credentials,
             insecure,
@@ -530,8 +530,8 @@ class Estore(object):
             request,
             target,
             '/estore.Estore/ReadOnSession',
-            ddpestore_dot_estore__pb2.UUID.SerializeToString,
-            ddpestore_dot_estore__pb2.ReadEntityResponse.FromString,
+            sfegrpc_dot_estore__pb2.UUID.SerializeToString,
+            sfegrpc_dot_estore__pb2.ReadEntityResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -557,8 +557,8 @@ class Estore(object):
             request,
             target,
             '/estore.Estore/EndReadSession',
-            ddpestore_dot_estore__pb2.UUID.SerializeToString,
-            ddpestore_dot_estore__pb2.Empty.FromString,
+            sfegrpc_dot_estore__pb2.UUID.SerializeToString,
+            sfegrpc_dot_estore__pb2.Empty.FromString,
             options,
             channel_credentials,
             insecure,
