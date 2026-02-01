@@ -3,7 +3,7 @@
 import grpc
 import warnings
 
-from ddpestore import stfl_pb2 as ddpestore_dot_stfl__pb2
+from sfegrpc import stfl_pb2 as sfegrpc_dot_stfl__pb2
 
 GRPC_GENERATED_VERSION = '1.76.0'
 GRPC_VERSION = grpc.__version__
@@ -18,7 +18,7 @@ except ImportError:
 if _version_not_supported:
     raise RuntimeError(
         f'The grpc package installed is at version {GRPC_VERSION},'
-        + ' but the generated code in ddpestore/stfl_pb2_grpc.py depends on'
+        + ' but the generated code in sfegrpc/stfl_pb2_grpc.py depends on'
         + f' grpcio>={GRPC_GENERATED_VERSION}.'
         + f' Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}'
         + f' or downgrade your generated code using grpcio-tools<={GRPC_VERSION}.'
@@ -36,23 +36,23 @@ class StateStub(object):
         """
         self.Put = channel.unary_unary(
                 '/stfl.State/Put',
-                request_serializer=ddpestore_dot_stfl__pb2.KeyValue.SerializeToString,
-                response_deserializer=ddpestore_dot_stfl__pb2.Bool.FromString,
+                request_serializer=sfegrpc_dot_stfl__pb2.KeyValue.SerializeToString,
+                response_deserializer=sfegrpc_dot_stfl__pb2.Bool.FromString,
                 _registered_method=True)
         self.Exists = channel.unary_unary(
                 '/stfl.State/Exists',
-                request_serializer=ddpestore_dot_stfl__pb2.Key.SerializeToString,
-                response_deserializer=ddpestore_dot_stfl__pb2.Bool.FromString,
+                request_serializer=sfegrpc_dot_stfl__pb2.Key.SerializeToString,
+                response_deserializer=sfegrpc_dot_stfl__pb2.Bool.FromString,
                 _registered_method=True)
         self.Get = channel.unary_unary(
                 '/stfl.State/Get',
-                request_serializer=ddpestore_dot_stfl__pb2.Key.SerializeToString,
-                response_deserializer=ddpestore_dot_stfl__pb2.Value.FromString,
+                request_serializer=sfegrpc_dot_stfl__pb2.Key.SerializeToString,
+                response_deserializer=sfegrpc_dot_stfl__pb2.Value.FromString,
                 _registered_method=True)
         self.Delete = channel.unary_unary(
                 '/stfl.State/Delete',
-                request_serializer=ddpestore_dot_stfl__pb2.Key.SerializeToString,
-                response_deserializer=ddpestore_dot_stfl__pb2.Bool.FromString,
+                request_serializer=sfegrpc_dot_stfl__pb2.Key.SerializeToString,
+                response_deserializer=sfegrpc_dot_stfl__pb2.Bool.FromString,
                 _registered_method=True)
 
 
@@ -88,23 +88,23 @@ def add_StateServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'Put': grpc.unary_unary_rpc_method_handler(
                     servicer.Put,
-                    request_deserializer=ddpestore_dot_stfl__pb2.KeyValue.FromString,
-                    response_serializer=ddpestore_dot_stfl__pb2.Bool.SerializeToString,
+                    request_deserializer=sfegrpc_dot_stfl__pb2.KeyValue.FromString,
+                    response_serializer=sfegrpc_dot_stfl__pb2.Bool.SerializeToString,
             ),
             'Exists': grpc.unary_unary_rpc_method_handler(
                     servicer.Exists,
-                    request_deserializer=ddpestore_dot_stfl__pb2.Key.FromString,
-                    response_serializer=ddpestore_dot_stfl__pb2.Bool.SerializeToString,
+                    request_deserializer=sfegrpc_dot_stfl__pb2.Key.FromString,
+                    response_serializer=sfegrpc_dot_stfl__pb2.Bool.SerializeToString,
             ),
             'Get': grpc.unary_unary_rpc_method_handler(
                     servicer.Get,
-                    request_deserializer=ddpestore_dot_stfl__pb2.Key.FromString,
-                    response_serializer=ddpestore_dot_stfl__pb2.Value.SerializeToString,
+                    request_deserializer=sfegrpc_dot_stfl__pb2.Key.FromString,
+                    response_serializer=sfegrpc_dot_stfl__pb2.Value.SerializeToString,
             ),
             'Delete': grpc.unary_unary_rpc_method_handler(
                     servicer.Delete,
-                    request_deserializer=ddpestore_dot_stfl__pb2.Key.FromString,
-                    response_serializer=ddpestore_dot_stfl__pb2.Bool.SerializeToString,
+                    request_deserializer=sfegrpc_dot_stfl__pb2.Key.FromString,
+                    response_serializer=sfegrpc_dot_stfl__pb2.Bool.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -132,8 +132,8 @@ class State(object):
             request,
             target,
             '/stfl.State/Put',
-            ddpestore_dot_stfl__pb2.KeyValue.SerializeToString,
-            ddpestore_dot_stfl__pb2.Bool.FromString,
+            sfegrpc_dot_stfl__pb2.KeyValue.SerializeToString,
+            sfegrpc_dot_stfl__pb2.Bool.FromString,
             options,
             channel_credentials,
             insecure,
@@ -159,8 +159,8 @@ class State(object):
             request,
             target,
             '/stfl.State/Exists',
-            ddpestore_dot_stfl__pb2.Key.SerializeToString,
-            ddpestore_dot_stfl__pb2.Bool.FromString,
+            sfegrpc_dot_stfl__pb2.Key.SerializeToString,
+            sfegrpc_dot_stfl__pb2.Bool.FromString,
             options,
             channel_credentials,
             insecure,
@@ -186,8 +186,8 @@ class State(object):
             request,
             target,
             '/stfl.State/Get',
-            ddpestore_dot_stfl__pb2.Key.SerializeToString,
-            ddpestore_dot_stfl__pb2.Value.FromString,
+            sfegrpc_dot_stfl__pb2.Key.SerializeToString,
+            sfegrpc_dot_stfl__pb2.Value.FromString,
             options,
             channel_credentials,
             insecure,
@@ -213,8 +213,8 @@ class State(object):
             request,
             target,
             '/stfl.State/Delete',
-            ddpestore_dot_stfl__pb2.Key.SerializeToString,
-            ddpestore_dot_stfl__pb2.Bool.FromString,
+            sfegrpc_dot_stfl__pb2.Key.SerializeToString,
+            sfegrpc_dot_stfl__pb2.Bool.FromString,
             options,
             channel_credentials,
             insecure,
@@ -237,38 +237,38 @@ class FlowStub(object):
         """
         self.Create = channel.unary_unary(
                 '/stfl.Flow/Create',
-                request_serializer=ddpestore_dot_stfl__pb2.TopicConfig.SerializeToString,
-                response_deserializer=ddpestore_dot_stfl__pb2.Bool.FromString,
+                request_serializer=sfegrpc_dot_stfl__pb2.TopicConfig.SerializeToString,
+                response_deserializer=sfegrpc_dot_stfl__pb2.Bool.FromString,
                 _registered_method=True)
         self.Delete = channel.unary_unary(
                 '/stfl.Flow/Delete',
-                request_serializer=ddpestore_dot_stfl__pb2.Topic.SerializeToString,
-                response_deserializer=ddpestore_dot_stfl__pb2.Bool.FromString,
+                request_serializer=sfegrpc_dot_stfl__pb2.Topic.SerializeToString,
+                response_deserializer=sfegrpc_dot_stfl__pb2.Bool.FromString,
                 _registered_method=True)
         self.Exists = channel.unary_unary(
                 '/stfl.Flow/Exists',
-                request_serializer=ddpestore_dot_stfl__pb2.Topic.SerializeToString,
-                response_deserializer=ddpestore_dot_stfl__pb2.Bool.FromString,
+                request_serializer=sfegrpc_dot_stfl__pb2.Topic.SerializeToString,
+                response_deserializer=sfegrpc_dot_stfl__pb2.Bool.FromString,
                 _registered_method=True)
         self.Shutdown = channel.unary_unary(
                 '/stfl.Flow/Shutdown',
-                request_serializer=ddpestore_dot_stfl__pb2.ShutdownRequest.SerializeToString,
-                response_deserializer=ddpestore_dot_stfl__pb2.Bool.FromString,
+                request_serializer=sfegrpc_dot_stfl__pb2.ShutdownRequest.SerializeToString,
+                response_deserializer=sfegrpc_dot_stfl__pb2.Bool.FromString,
                 _registered_method=True)
         self.Put = channel.unary_unary(
                 '/stfl.Flow/Put',
-                request_serializer=ddpestore_dot_stfl__pb2.TopicValue.SerializeToString,
-                response_deserializer=ddpestore_dot_stfl__pb2.Bool.FromString,
+                request_serializer=sfegrpc_dot_stfl__pb2.TopicValue.SerializeToString,
+                response_deserializer=sfegrpc_dot_stfl__pb2.Bool.FromString,
                 _registered_method=True)
         self.Get = channel.unary_unary(
                 '/stfl.Flow/Get',
-                request_serializer=ddpestore_dot_stfl__pb2.Topic.SerializeToString,
-                response_deserializer=ddpestore_dot_stfl__pb2.ValueOrNone.FromString,
+                request_serializer=sfegrpc_dot_stfl__pb2.Topic.SerializeToString,
+                response_deserializer=sfegrpc_dot_stfl__pb2.ValueOrNone.FromString,
                 _registered_method=True)
         self.Join = channel.unary_unary(
                 '/stfl.Flow/Join',
-                request_serializer=ddpestore_dot_stfl__pb2.Topic.SerializeToString,
-                response_deserializer=ddpestore_dot_stfl__pb2.Bool.FromString,
+                request_serializer=sfegrpc_dot_stfl__pb2.Topic.SerializeToString,
+                response_deserializer=sfegrpc_dot_stfl__pb2.Bool.FromString,
                 _registered_method=True)
 
 
@@ -322,38 +322,38 @@ def add_FlowServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'Create': grpc.unary_unary_rpc_method_handler(
                     servicer.Create,
-                    request_deserializer=ddpestore_dot_stfl__pb2.TopicConfig.FromString,
-                    response_serializer=ddpestore_dot_stfl__pb2.Bool.SerializeToString,
+                    request_deserializer=sfegrpc_dot_stfl__pb2.TopicConfig.FromString,
+                    response_serializer=sfegrpc_dot_stfl__pb2.Bool.SerializeToString,
             ),
             'Delete': grpc.unary_unary_rpc_method_handler(
                     servicer.Delete,
-                    request_deserializer=ddpestore_dot_stfl__pb2.Topic.FromString,
-                    response_serializer=ddpestore_dot_stfl__pb2.Bool.SerializeToString,
+                    request_deserializer=sfegrpc_dot_stfl__pb2.Topic.FromString,
+                    response_serializer=sfegrpc_dot_stfl__pb2.Bool.SerializeToString,
             ),
             'Exists': grpc.unary_unary_rpc_method_handler(
                     servicer.Exists,
-                    request_deserializer=ddpestore_dot_stfl__pb2.Topic.FromString,
-                    response_serializer=ddpestore_dot_stfl__pb2.Bool.SerializeToString,
+                    request_deserializer=sfegrpc_dot_stfl__pb2.Topic.FromString,
+                    response_serializer=sfegrpc_dot_stfl__pb2.Bool.SerializeToString,
             ),
             'Shutdown': grpc.unary_unary_rpc_method_handler(
                     servicer.Shutdown,
-                    request_deserializer=ddpestore_dot_stfl__pb2.ShutdownRequest.FromString,
-                    response_serializer=ddpestore_dot_stfl__pb2.Bool.SerializeToString,
+                    request_deserializer=sfegrpc_dot_stfl__pb2.ShutdownRequest.FromString,
+                    response_serializer=sfegrpc_dot_stfl__pb2.Bool.SerializeToString,
             ),
             'Put': grpc.unary_unary_rpc_method_handler(
                     servicer.Put,
-                    request_deserializer=ddpestore_dot_stfl__pb2.TopicValue.FromString,
-                    response_serializer=ddpestore_dot_stfl__pb2.Bool.SerializeToString,
+                    request_deserializer=sfegrpc_dot_stfl__pb2.TopicValue.FromString,
+                    response_serializer=sfegrpc_dot_stfl__pb2.Bool.SerializeToString,
             ),
             'Get': grpc.unary_unary_rpc_method_handler(
                     servicer.Get,
-                    request_deserializer=ddpestore_dot_stfl__pb2.Topic.FromString,
-                    response_serializer=ddpestore_dot_stfl__pb2.ValueOrNone.SerializeToString,
+                    request_deserializer=sfegrpc_dot_stfl__pb2.Topic.FromString,
+                    response_serializer=sfegrpc_dot_stfl__pb2.ValueOrNone.SerializeToString,
             ),
             'Join': grpc.unary_unary_rpc_method_handler(
                     servicer.Join,
-                    request_deserializer=ddpestore_dot_stfl__pb2.Topic.FromString,
-                    response_serializer=ddpestore_dot_stfl__pb2.Bool.SerializeToString,
+                    request_deserializer=sfegrpc_dot_stfl__pb2.Topic.FromString,
+                    response_serializer=sfegrpc_dot_stfl__pb2.Bool.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -381,8 +381,8 @@ class Flow(object):
             request,
             target,
             '/stfl.Flow/Create',
-            ddpestore_dot_stfl__pb2.TopicConfig.SerializeToString,
-            ddpestore_dot_stfl__pb2.Bool.FromString,
+            sfegrpc_dot_stfl__pb2.TopicConfig.SerializeToString,
+            sfegrpc_dot_stfl__pb2.Bool.FromString,
             options,
             channel_credentials,
             insecure,
@@ -408,8 +408,8 @@ class Flow(object):
             request,
             target,
             '/stfl.Flow/Delete',
-            ddpestore_dot_stfl__pb2.Topic.SerializeToString,
-            ddpestore_dot_stfl__pb2.Bool.FromString,
+            sfegrpc_dot_stfl__pb2.Topic.SerializeToString,
+            sfegrpc_dot_stfl__pb2.Bool.FromString,
             options,
             channel_credentials,
             insecure,
@@ -435,8 +435,8 @@ class Flow(object):
             request,
             target,
             '/stfl.Flow/Exists',
-            ddpestore_dot_stfl__pb2.Topic.SerializeToString,
-            ddpestore_dot_stfl__pb2.Bool.FromString,
+            sfegrpc_dot_stfl__pb2.Topic.SerializeToString,
+            sfegrpc_dot_stfl__pb2.Bool.FromString,
             options,
             channel_credentials,
             insecure,
@@ -462,8 +462,8 @@ class Flow(object):
             request,
             target,
             '/stfl.Flow/Shutdown',
-            ddpestore_dot_stfl__pb2.ShutdownRequest.SerializeToString,
-            ddpestore_dot_stfl__pb2.Bool.FromString,
+            sfegrpc_dot_stfl__pb2.ShutdownRequest.SerializeToString,
+            sfegrpc_dot_stfl__pb2.Bool.FromString,
             options,
             channel_credentials,
             insecure,
@@ -489,8 +489,8 @@ class Flow(object):
             request,
             target,
             '/stfl.Flow/Put',
-            ddpestore_dot_stfl__pb2.TopicValue.SerializeToString,
-            ddpestore_dot_stfl__pb2.Bool.FromString,
+            sfegrpc_dot_stfl__pb2.TopicValue.SerializeToString,
+            sfegrpc_dot_stfl__pb2.Bool.FromString,
             options,
             channel_credentials,
             insecure,
@@ -516,8 +516,8 @@ class Flow(object):
             request,
             target,
             '/stfl.Flow/Get',
-            ddpestore_dot_stfl__pb2.Topic.SerializeToString,
-            ddpestore_dot_stfl__pb2.ValueOrNone.FromString,
+            sfegrpc_dot_stfl__pb2.Topic.SerializeToString,
+            sfegrpc_dot_stfl__pb2.ValueOrNone.FromString,
             options,
             channel_credentials,
             insecure,
@@ -543,8 +543,8 @@ class Flow(object):
             request,
             target,
             '/stfl.Flow/Join',
-            ddpestore_dot_stfl__pb2.Topic.SerializeToString,
-            ddpestore_dot_stfl__pb2.Bool.FromString,
+            sfegrpc_dot_stfl__pb2.Topic.SerializeToString,
+            sfegrpc_dot_stfl__pb2.Bool.FromString,
             options,
             channel_credentials,
             insecure,
