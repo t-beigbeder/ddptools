@@ -18,7 +18,7 @@ classifiers = [
 license = "LicenseRef-EUPL-1.2-or-later"
 license-files = ["LICENSE.md"]
 dependencies = [
-  "ddpbasics @ /tools/pip_repo/ddpbasics/ddpbasics-0.1-py3-none-any.whl",
+  "ddpbasics @ /tools/pip_repo/ddpbasics/ddpbasics-0.1.1-py3-none-any.whl",
   "cryptography>=46.0.3,<47",
   "PyYAML>=6.0.3,<7",
   "boto3>=1.42,<2",
@@ -41,6 +41,14 @@ log_date_format = "%Y-%m-%d %H:%M:%S"
 
 [[tool.mypy.overrides]]
 module = ["xdg.*"]
+follow_untyped_imports = true
+
+[[tool.mypy.overrides]]
+module = ["boto3.*"]
+follow_untyped_imports = true
+
+[[tool.mypy.overrides]]
+module = ["botocore.*"]
 follow_untyped_imports = true
 
 [tool.coverage.run]
