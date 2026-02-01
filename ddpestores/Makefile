@@ -49,3 +49,8 @@ coverage: export PYTEST_FAST=1
 coverage:	## launch QA tests for HTML coverage only
 	$(VENV)/bin/coverage run --source=src/ -m pytest src/
 	$(VENV)/bin/coverage html
+
+.PHONY: runs
+runs: export PYTHONPATH=src
+runs:	## run the grpc server
+	$(VENV)/bin/python -m ddpestores.sfe_svr -p 8181 --db-server t-db-pgs -d estore_c01_main_test --s3-profile otvl-tests -b otvl-tests
