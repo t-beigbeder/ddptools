@@ -6,3 +6,4 @@ build
 types-protobuf
 types-grpcio
 awscli
+hatchling

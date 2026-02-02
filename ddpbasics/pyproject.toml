@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ddpbasics"
-version = "0.1.1"
+dynamic = ["version", "dependencies"]
 authors = [
   { name="thierry_otvl", email="tbeigbeder.nospam@gmail.com" },
 ]
@@ -17,9 +17,23 @@ classifiers = [
 ]
 license = "LicenseRef-EUPL-1.2-or-later"
 license-files = ["LICENSE.md"]
-dependencies = [
-  "cryptography>=46.0.3,<47",
-  "PyYAML>=6.0.3,<7",
+
+[tool.hatch.metadata.hooks.custom]
+path = "src/hatch_build.py"
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+  ".idea/",
+  ".vscode/",
+  "tmp/",
+  "logs/",
+  "build/",
+  "dist/",
+  "__pycache__/",
+  ".pytest_cache/",
+  ".coverage",
+  "htmlcov/",
+  ".mypy_cache/",
 ]
 
 [project.urls]

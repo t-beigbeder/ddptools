@@ -6,7 +6,6 @@ import sys
 import grpc
 
 from sfegrpc import estore_pb2_grpc, estore_pb2
-from . import estoredbc
 
 
 logger = logging.getLogger("sfe_init_db")
@@ -30,7 +29,7 @@ def main():
     with grpc.insecure_channel(f"{host}:{port}") as channel:
         stub = estore_pb2_grpc.EstoreStub(channel)
         stub.Create(
-            estore_pb2.CreateRequest(exist_ok=True, drop=drop, ddl=estoredbc.BASIC_DDL)
+            estore_pb2.CreateRequest(exist_ok=True, drop=drop, ddl="")
         )
     logger.info("main: exiting")
 

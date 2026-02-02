@@ -327,8 +327,9 @@ class Estore(estore_pb2_grpc.EstoreServicer):
         return estore_pb2.Bool(value=rsp)
 
     def Create(self, request: estore_pb2.CreateRequest, context) -> estore_pb2.Bool:
-        rsp = self.es_admin.create_db(request.exist_ok, request.drop, request.ddl)
-        logger.info(f"create: {request.exist_ok}, {request.drop} -> {rsp}")
+        ddl = estoredb.BASIC_DDL if not request.ddl else request.ddl
+        rsp = self.es_admin.create_db(request.exist_ok, request.drop, ddl)
+        logger.info(f"create: {request.exist_ok}, {request.drop}, {len(ddl)} -> {rsp}")
         return estore_pb2.Bool(value=rsp)
 
     def CreateCategory(
