@@ -1,4 +1,4 @@
-${PYPIF}/../ddpbasics/ddpbasics-0.2-py3-none-any.whl
+../ddpbasics
 boto3>=1.42,<2
 psycopg[binary]>=3.3,<3.4
 grpcio>=1.76,<1.77

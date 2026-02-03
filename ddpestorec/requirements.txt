@@ -1,3 +1,3 @@
-${PYPIF}/../ddpbasics/ddpbasics-0.1-py3-none-any.whl
+../ddpbasics
 grpcio>=1.76,<1.77
 grpcio-tools>=1.76,<1.77

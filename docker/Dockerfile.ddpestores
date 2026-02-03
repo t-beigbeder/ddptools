@@ -1,0 +1,20 @@
+FROM t-ctr.otvl.org/debpyv:3.13 AS build
+WORKDIR /sources
+COPY . /sources/
+WORKDIR /sources/ddpbasics
+WORKDIR /sources/ddpestores
+RUN python3 -m venv /venv && \
+ /venv/bin/pip install -r requirements.txt .
+
+FROM t-ctr.otvl.org/debpy:3.13
+RUN mkdir -p /home/dv-user  && \
+    chown -R 2001:2001 /home/dv-user
+COPY --from=build /venv /venv
+
+USER 2001
+WORKDIR /home/dv-user
+ENV LANG=en_US.UTF-8
+ENV USER=dv-user
+ENV HOME=/home/dv-user
+ENV SHELL=/bin/bash
+ENV PYTHONPATH=/src

@@ -1,9 +1,0 @@
-# More info: https://docs.docker.com/build/concepts/context/#dockerignore-files
-# Ignore build and test binaries.
-
-.dockerignore
-Dockerfile
-.coverage
-.pytest_cache/
-.vscode/
-htmlcov/
