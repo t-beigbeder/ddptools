@@ -2,6 +2,7 @@ FROM t-ctr.otvl.org/debpyv:3.13 AS build
 WORKDIR /sources
 COPY . /sources/
 WORKDIR /sources/ddpbasics
+RUN /benv/bin/python -m build -o /build
 WORKDIR /sources/ddpestores
 RUN python3 -m venv /venv && \
  /venv/bin/pip install -r requirements.txt .

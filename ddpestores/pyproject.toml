@@ -5,15 +5,13 @@ build-backend = "hatchling.build"
 [project]
 name = "ddpestores"
 dynamic = ["version", "dependencies"]
-authors = [
-  { name="thierry_otvl", email="tbeigbeder.nospam@gmail.com" },
-]
+authors = [{ name = "thierry_otvl", email = "tbeigbeder.nospam@gmail.com" }]
 description = "This is ddpestores"
 readme = "README.md"
 requires-python = ">=3.13"
 classifiers = [
-    "Programming Language :: Python :: 3",
-    "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Operating System :: OS Independent",
 ]
 license = "LicenseRef-EUPL-1.2-or-later"
 license-files = ["LICENSE.md"]
@@ -23,6 +21,9 @@ allow-direct-references = true
 
 [tool.hatch.metadata.hooks.custom]
 path = "src/hatch_build.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ddpestores", "src/sfegrpc"]
 
 [tool.hatch.build.targets.sdist]
 exclude = [
@@ -61,7 +62,4 @@ module = ["botocore.*"]
 follow_untyped_imports = true
 
 [tool.coverage.run]
-omit = [
-    "*_pb2.py",
-    "*_pb2_grpc.py"
-    ]
+omit = ["*_pb2.py", "*_pb2_grpc.py"]

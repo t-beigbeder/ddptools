@@ -7,4 +7,4 @@ help:	## show this help
 docker:	## builds base docker images
 	docker build -t t-ctr.otvl.org/debpy:3.13 . -f docker/Dockerfile.debpy
 	docker build -t t-ctr.otvl.org/debpyv:3.13 . -f docker/Dockerfile.debpyv
-	docker build -t t-ctr.otvl.org/ddpestores:0.1.2 . -f docker/Dockerfile.ddpestores
+	docker build -t t-ctr.otvl.org/ddpestores:0.1.3 . -f docker/Dockerfile.ddpestores
