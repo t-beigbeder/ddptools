@@ -4,7 +4,8 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ddpbasics"
-dynamic = ["version", "dependencies"]
+version = "0.2"
+dynamic = ["dependencies"]
 authors = [
   { name="thierry_otvl", email="tbeigbeder.nospam@gmail.com" },
 ]

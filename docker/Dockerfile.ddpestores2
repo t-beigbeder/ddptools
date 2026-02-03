@@ -1,9 +1,10 @@
-FROM t-ctr.otvl.org/debpyv:3.13 AS build
+FROM t-ctr.otvl.org/ddpestores-dev:0.2 AS build
 WORKDIR /sources
 COPY . /sources/
 WORKDIR /sources/ddpestores
 RUN python3 -m venv /venv && \
- /venv/bin/pip install -r requirements.txt .
+ /venv/bin/pip install /build/ddpestores-0.2-py3-none-any.whl
+
 
 FROM t-ctr.otvl.org/debpy:3.13
 RUN mkdir -p /home/dv-user  && \

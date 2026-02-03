@@ -31,6 +31,7 @@ grpc-code:	## generate grpc code from proto files
 	$(VENV)/bin/python -m grpc_tools.protoc -Isfegrpc=../grpc --python_out=src --pyi_out=src --grpc_python_out=src ../grpc/ope.proto
 
 .PHONY: build
+build: export PYPIF=$(vPYPIF)
 build:	## builds a python package
 	$(VENV)/bin/python -m build -o $(PYPIF)
 

@@ -7,4 +7,13 @@ help:	## show this help
 docker:	## builds base docker images
 	docker build -t t-ctr.otvl.org/debpy:3.13 . -f docker/Dockerfile.debpy
 	docker build -t t-ctr.otvl.org/debpyv:3.13 . -f docker/Dockerfile.debpyv
-	docker build -t t-ctr.otvl.org/ddpestores:0.1.3 . -f docker/Dockerfile.ddpestores
+	docker build -t t-ctr.otvl.org/ddpestores-dev:0.2 . -f docker/Dockerfile.ddpestores-dev
+	docker build -t t-ctr.otvl.org/ddpestores:0.2 . -f docker/Dockerfile.ddpestores
+	docker build -t t-ctr.otvl.org/ddpestores2:0.2 . -f docker/Dockerfile.ddpestores2
+	docker build -t t-ctr.otvl.org/ddpestorec-dev:0.2 . -f docker/Dockerfile.ddpestorec-dev
+	docker build -t t-ctr.otvl.org/ddpestorec:0.2 . -f docker/Dockerfile.ddpestorec
+
+.PHONY: dockerc
+dockerc:	## builds docker images client only
+	docker build -t t-ctr.otvl.org/ddpestorec-dev:0.2 . -f docker/Dockerfile.ddpestorec-dev
+	docker build -t t-ctr.otvl.org/ddpestorec:0.2 . -f docker/Dockerfile.ddpestorec

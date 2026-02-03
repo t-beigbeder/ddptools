@@ -1,0 +1,7 @@
+FROM t-ctr.otvl.org/debpyv:3.13
+WORKDIR /sources
+COPY . /sources/
+WORKDIR /sources/ddpbasics
+RUN /benv/bin/python -m build -o /build
+WORKDIR /sources/ddpestorec
+RUN /benv/bin/python -m build -o /build

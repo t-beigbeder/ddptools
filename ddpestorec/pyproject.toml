@@ -5,9 +5,8 @@ build-backend = "hatchling.build"
 [project]
 name = "ddpestorec"
 version = "0.1"
-authors = [
-  { name="thierry_otvl", email="tbeigbeder.nospam@gmail.com" },
-]
+dynamic = ["dependencies"]
+authors = [{ name = "thierry_otvl", email = "tbeigbeder.nospam@gmail.com" }]
 description = "This is ddpestorec"
 readme = "README.md"
 requires-python = ">=3.13"
@@ -17,12 +16,29 @@ classifiers = [
 ]
 license = "LicenseRef-EUPL-1.2-or-later"
 license-files = ["LICENSE.md"]
-dependencies = [
-  "ddpbasics @ /tools/pip_repo/ddpbasics/ddpbasics-0.1.1-py3-none-any.whl",
-  "cryptography>=46.0.3,<47",
-  "PyYAML>=6.0.3,<7",
-  "grpcio>=1.76,<1.77",
-  "grpcio-tools>=1.76,<1.77"
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.metadata.hooks.custom]
+path = "src/hatch_build.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ddpestorec", "src/sfegrpc"]
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+  ".idea/",
+  ".vscode/",
+  "tmp/",
+  "logs/",
+  "build/",
+  "dist/",
+  "__pycache__/",
+  ".pytest_cache/",
+  ".coverage",
+  "htmlcov/",
+  ".mypy_cache/",
 ]
 
 [project.urls]

@@ -5,3 +5,4 @@ mypy
 build
 types-protobuf
 types-grpcio
+hatchling
