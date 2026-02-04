@@ -1,0 +1,13 @@
+ARG DEBPYV_IMAGE=registry/debpyv:3.13-tbd
+
+FROM $DEBPYV_IMAGE
+
+ARG V_DDPT_V=0.1
+
+WORKDIR /sources
+COPY . /sources/
+WORKDIR /sources/ddpbasics
+RUN /benv/bin/python -m build -o /build
+WORKDIR /sources/ddpestorec
+ENV V_DDPT_V=$V_DDPT_V
+RUN /benv/bin/python -m build -o /build
