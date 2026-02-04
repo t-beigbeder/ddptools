@@ -4,8 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ddpestorec"
-version = "0.1"
-dynamic = ["dependencies"]
+dynamic = ["version", "dependencies"]
 authors = [{ name = "thierry_otvl", email = "tbeigbeder.nospam@gmail.com" }]
 description = "This is ddpestorec"
 readme = "README.md"

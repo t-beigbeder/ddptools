@@ -5,17 +5,54 @@ help:	## show this help
 
 .PHONY: docker
 docker:	## builds base docker images
-	docker build -t t-ctr.otvl.org/debpy:3.13 . -f docker/Dockerfile.debpy
-	docker build -t t-ctr.otvl.org/debpyv:3.13 . -f docker/Dockerfile.debpyv
-	docker build -t t-ctr.otvl.org/ddpestores-dev:0.2 . -f docker/Dockerfile.ddpestores-dev
-	docker build -t t-ctr.otvl.org/ddpestores:0.2 . -f docker/Dockerfile.ddpestores
-	docker build -t t-ctr.otvl.org/ddpestores2:0.2 . -f docker/Dockerfile.ddpestores2
-	docker push t-ctr.otvl.org/ddpestores:0.2
-	docker build -t t-ctr.otvl.org/ddpestorec-dev:0.2 . -f docker/Dockerfile.ddpestorec-dev
-	docker build -t t-ctr.otvl.org/ddpestorec:0.2 . -f docker/Dockerfile.ddpestorec
-	docker push t-ctr.otvl.org/ddpestorec:0.2
+	docker build -t $(V_CTR_PFX)debpy:$(V_DEBPY_V) . -f docker/Dockerfile.debpy
+	docker build -t $(V_CTR_PFX)debpyv:$(V_DEBPY_V) . -f docker/Dockerfile.debpyv
+	docker build \
+		--build-arg V_DDPT_V=$(V_DDPT_V) \
+		--build-arg DEBPYV_IMAGE=$(V_CTR_PFX)debpyv:$(V_DEBPY_V) \
+		-t $(V_CTR_PFX)ddpestores-dev:$(V_DDPT_V) \
+		. -f docker/Dockerfile.ddpestores-dev
+	docker build \
+		--build-arg V_DDPT_V=$(V_DDPT_V) \
+		--build-arg DEBPY_IMAGE=$(V_CTR_PFX)debpy:$(V_DEBPY_V) \
+		--build-arg DEBPYV_IMAGE=$(V_CTR_PFX)debpyv:$(V_DEBPY_V) \
+		-t $(V_CTR_PFX)ddpestores:$(V_DDPT_V) \
+		. -f docker/Dockerfile.ddpestores
+	docker push $(V_CTR_PFX)ddpestores:$(V_DDPT_V)
+	docker build \
+		--build-arg V_DDPT_V=$(V_DDPT_V) \
+		--build-arg DEBPY_IMAGE=$(V_CTR_PFX)debpy:$(V_DEBPY_V) \
+		--build-arg DDPESTORES_DEV_IMAGE=$(V_CTR_PFX)ddpestores-dev:$(V_DDPT_V) \
+		-t $(V_CTR_PFX)ddpestores2:$(V_DDPT_V) \
+		. -f docker/Dockerfile.ddpestores2
+	docker build \
+		--build-arg V_DDPT_V=$(V_DDPT_V) \
+		--build-arg DEBPYV_IMAGE=$(V_CTR_PFX)debpyv:$(V_DEBPY_V) \
+		-t $(V_CTR_PFX)ddpestorec-dev:$(V_DDPT_V) \
+		. -f docker/Dockerfile.ddpestorec-dev
+	docker build \
+		--build-arg V_DDPT_V=$(V_DDPT_V) \
+		--build-arg DEBPY_IMAGE=$(V_CTR_PFX)debpy:$(V_DEBPY_V) \
+		--build-arg DEBPYV_IMAGE=$(V_CTR_PFX)debpyv:$(V_DEBPY_V) \
+		-t $(V_CTR_PFX)ddpestorec:$(V_DDPT_V) \
+		. -f docker/Dockerfile.ddpestorec
+	docker push $(V_CTR_PFX)ddpestorec:$(V_DDPT_V)
 
 .PHONY: dockerc
 dockerc:	## builds docker images client only
 	docker build -t t-ctr.otvl.org/ddpestorec-dev:0.2 . -f docker/Dockerfile.ddpestorec-dev
 	docker build -t t-ctr.otvl.org/ddpestorec:0.2 . -f docker/Dockerfile.ddpestorec
+
+.PHONY: dockert
+dockert:	## builds docker images for testing
+	docker build \
+		--build-arg V_DDPT_V=$(V_DDPT_V) \
+		--build-arg DEBPYV_IMAGE=$(V_CTR_PFX)debpyv:$(V_DEBPY_V) \
+		-t $(V_CTR_PFX)ddpestorec-dev:$(V_DDPT_V) \
+		. -f docker/Dockerfile.ddpestorec-dev
+	docker build \
+		--build-arg V_DDPT_V=$(V_DDPT_V) \
+		--build-arg DEBPY_IMAGE=$(V_CTR_PFX)debpy:$(V_DEBPY_V) \
+		--build-arg DEBPYV_IMAGE=$(V_CTR_PFX)debpyv:$(V_DEBPY_V) \
+		-t $(V_CTR_PFX)ddpestorec:$(V_DDPT_V) \
+		. -f docker/Dockerfile.ddpestorec

@@ -1,11 +1,18 @@
-FROM t-ctr.otvl.org/debpyv:3.13 AS build
+ARG DEBPYV_IMAGE=registry/debpyv:3.13-tbd
+ARG DEBPY_IMAGE=registry/debpy:3.13-tbd
+
+FROM $DEBPYV_IMAGE AS build
+
+ARG V_DDPT_V=0.1
+
 WORKDIR /sources
 COPY . /sources/
 WORKDIR /sources/ddpestores
+ENV V_DDPT_V=$V_DDPT_V
 RUN python3 -m venv /venv && \
  /venv/bin/pip install -r requirements.txt .
 
-FROM t-ctr.otvl.org/debpy:3.13
+FROM $DEBPY_IMAGE
 RUN mkdir -p /home/dv-user  && \
     chown -R 2001:2001 /home/dv-user
 COPY --from=build /venv /venv
