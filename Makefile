@@ -38,11 +38,6 @@ docker:	## builds base docker images
 		. -f docker/Dockerfile.ddpestorec
 	docker push $(V_CTR_PFX)ddpestorec:$(V_DDPT_V)
 
-.PHONY: dockerc
-dockerc:	## builds docker images client only
-	docker build -t t-ctr.otvl.org/ddpestorec-dev:0.2 . -f docker/Dockerfile.ddpestorec-dev
-	docker build -t t-ctr.otvl.org/ddpestorec:0.2 . -f docker/Dockerfile.ddpestorec
-
 .PHONY: dockert
 dockert:	## builds docker images for testing
 	docker build \
