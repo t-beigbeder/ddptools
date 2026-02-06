@@ -16,5 +16,3 @@ class MetaDataHook(MetadataHookInterface):
                     continue
                 # ../ddpbasics => ddpbasics @ file:///path/to/ddpbasics
                 metadata["dependencies"].append(f"{ln[3:]} @ file://{str(pathlib.Path(ln).resolve())}")
-        with open("/tmp/tbe.log", "w") as of:
-            of.write(f"dependencies metadata hook {metadata['dependencies']}\n")
