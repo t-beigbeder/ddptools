@@ -48,3 +48,11 @@ log_date_format = "%Y-%m-%d %H:%M:%S"
 [[tool.mypy.overrides]]
 module = ["xdg.*"]
 follow_untyped_imports = true
+
+[[tool.mypy.overrides]]
+module = ["boto3.*"]
+follow_untyped_imports = true
+
+[[tool.mypy.overrides]]
+module = ["botocore.*"]
+follow_untyped_imports = true
