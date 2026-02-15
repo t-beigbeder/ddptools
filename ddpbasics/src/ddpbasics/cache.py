@@ -3,16 +3,13 @@ import hashlib
 import pathlib
 from typing import Generator
 
-from ddpbasics import gllk, xdg
+from ddpbasics import gllk, xdg, adapters
+# import s3utils
 
 
 COPY_BUFSIZE = 64 * 1024
 
 gllk.initialize()
-
-
-class HashError(Exception):
-    pass
 
 
 @functools.lru_cache
@@ -36,21 +33,12 @@ def get_cache_path_for(
     return "/".join(_get_cache_path_df_for(name, category, suffix))
 
 
-def _streamer(fp: pathlib.Path) -> Generator[bytes]:
-    with open(fp, "rb") as fd:
-        while True:
-            bs = fd.read(COPY_BUFSIZE)
-            if not len(bs):
-                return
-            yield bs
-
-
 def cache_streamer(
     name: str, category: str, suffix: str, streamer: Generator[bytes]
 ) -> Generator[bytes]:
     cf = pathlib.Path(get_cache_path_for(name, category, suffix))
     if cf.exists():
-        yield from _streamer(cf)
+        yield from adapters.file_streamer(str(cf))
         return
     nl = None
     ln = f"cache_streamer:{cf}"
@@ -66,3 +54,37 @@ def cache_streamer(
     finally:
         if nl:
             gllk.GlDict().named_lock_delete(ln)
+
+
+@functools.lru_cache
+def get_s3_cache_path_for(
+    name: str,
+    category: str,
+    suffix: str,
+) -> str:
+    hn = hashlib.sha256(bytes(name, "utf-8")).digest().hex()
+    return f"cache/otvl/data/{category}/{hn}{suffix}"
+
+
+# def s3_cache_streamer(
+#     bucket: str, profile_name: str | None,
+#     name: str, category: str, suffix: str, streamer: Generator[bytes]
+# ) -> Generator[bytes]:
+#     object_path = get_s3_cache_path_for(name, category, suffix)
+#     if s3utils.exists(bucket, object_path, profile_name):
+#         yield from s3utils.download(bucket, object_path, profile_name)
+#         return
+#     nl = None
+#     ln = f"s3_cache_streamer:{cf}"
+#     try:
+#         nl = gllk.GlDict().named_lock_get(ln)
+
+#         with cf.open("wb", buffering=COPY_BUFSIZE) as of:
+#             for chunk in streamer:
+#                 of.write(chunk)
+#                 yield chunk
+#     except Exception:
+#         raise
+#     finally:
+#         if nl:
+#             gllk.GlDict().named_lock_delete(ln)

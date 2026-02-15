@@ -10,7 +10,7 @@ def file_streamer(fp: str, size: int = 128 * 1024) -> Generator[bytes]:
             yield bs
 
 
-class StreamReader:
+class _StreamReader:
     def __init__(self, streamer: Generator[bytes]) -> None:
         self.streamer = streamer
         self.left = bytes()
@@ -20,13 +20,16 @@ class StreamReader:
             bs = self.left
             for chunk in self.streamer:
                 bs += chunk
+            self.left = bytes()
             return bs
+
+        if len(self.left) >= size:
+            bs = self.left[0:size]
+            self.left = self.left[size:]
+            return bs
+
         bs = bytes()
         while len(bs) != size:
-            if len(self.left) >= size:
-                bs = self.left[0:size]
-                self.left = self.left[size:-1]
-                return bs
             bs = self.left
             chunk2 = next(self.streamer, None)
             if chunk2 is None:
@@ -39,10 +42,10 @@ class StreamReader:
                 continue
             ln = len(bs)
             bs += chunk[:size-len(bs)]
-            self.left = chunk[size-ln:-1]
+            self.left = chunk[size-ln:]
             return bs
         return bs
 
 
 def stream_reader(streamer: Generator[bytes]) -> Any:
-    return StreamReader(streamer)
+    return _StreamReader(streamer)

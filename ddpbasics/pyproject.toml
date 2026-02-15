@@ -41,7 +41,7 @@ Homepage = "https://github.com/t-beigbeder/ddptools"
 
 [tool.pytest]
 log_cli = false
-log_cli_level = "DEBUG"
+log_cli_level = "INFO"
 log_cli_format = "%(asctime)s %(name)s %(levelname)-8s %(message)s"
 log_date_format = "%Y-%m-%d %H:%M:%S"
 
@@ -56,3 +56,6 @@ follow_untyped_imports = true
 [[tool.mypy.overrides]]
 module = ["botocore.*"]
 follow_untyped_imports = true
+
+[tool.coverage.run]
+omit = ["hatch_build.py"]
