@@ -14,6 +14,7 @@ def get_ifs(tmp_path):
                 for c in range(10000):
                     if_.write(f"{if_name}: count is {c}\n")
         return str(ifn)
+
     return [_gif("i" + n) for n in ["1", "2"]]
 
 

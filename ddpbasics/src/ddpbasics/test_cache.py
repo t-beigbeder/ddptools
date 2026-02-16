@@ -94,3 +94,50 @@ def test_large_file_cache(tmp_path, monkeypatch, get_xlf) -> None:
         h.update(bs)
     assert d.get(f"cnt1:{get_xlf[0]}") == 1
     assert h.digest().hex() == get_xlf[1]
+
+
+def test_get_s3_cache_path_for():
+    assert (
+        cache.get_s3_cache_path_for("that/name", "this_category")
+        == "cache/otvl/data/this_category/867183db61a257cb6bd228ac2eb092f101e41ec6c4216921b18a07ea62556848"
+    )
+
+
+def test_s3_files_cache(get_ifs) -> None:
+    _B = "otvl-tests"
+    _P = "otvl-tests"
+    d = gllk.GlDict()
+    for i, if_ in enumerate(get_ifs):
+        streamer = _local_streamer("cnt2", if_)
+        bs = bytearray()
+        for ck in cache.s3_cache_streamer(_B, _P, if_, "cat2", "", streamer):
+            bs.extend(ck)
+        assert bs.decode() == f"i{i + 1}\n"
+    for i, if_ in enumerate(get_ifs):
+        assert d.get(f"cnt2:{if_}") == 1
+    for i, if_ in enumerate(get_ifs):
+        streamer = _local_streamer("cnt2", if_)
+        bs = bytearray()
+        for ck in cache.s3_cache_streamer(_B, _P, if_, "cat2", "", streamer):
+            bs.extend(ck)
+        assert bs.decode() == f"i{i + 1}\n"
+    for i, if_ in enumerate(get_ifs):
+        assert d.get(f"cnt2:{if_}") == 1
+
+
+def test_s3_large_file_cache(get_xlf) -> None:
+    _B = "otvl-tests"
+    _P = "otvl-tests"
+    d = gllk.GlDict()
+    streamer = _local_streamer("cnt3", get_xlf[0])
+    h = sha256()
+    for bs in cache.s3_cache_streamer(_B, _P, get_xlf[0], "cat3", "", streamer):
+        h.update(bs)
+    assert h.digest().hex() == get_xlf[1]
+    assert d.get(f"cnt3:{get_xlf[0]}") == 1
+
+    h = sha256()
+    for bs in cache.s3_cache_streamer(_B, _P, get_xlf[0], "cat3", "", streamer):
+        h.update(bs)
+    assert d.get(f"cnt3:{get_xlf[0]}") == 1
+    assert h.digest().hex() == get_xlf[1]

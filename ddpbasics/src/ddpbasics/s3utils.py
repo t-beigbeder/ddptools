@@ -1,4 +1,5 @@
 from typing import Generator
+
 import boto3
 import botocore.exceptions
 
@@ -59,7 +60,7 @@ def exists(
     try:
         s3c.head_object(Bucket=bucket, Key=object_path)
     except botocore.exceptions.ClientError as e:
-        if e.response['Error']['Code'] == "404":
+        if e.response["Error"]["Code"] == "404":
             return False
         raise e
     return True

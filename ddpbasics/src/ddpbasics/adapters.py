@@ -1,4 +1,4 @@
-from typing import Generator, Any
+from typing import Any, Generator
 
 
 def file_streamer(fp: str, size: int = 128 * 1024) -> Generator[bytes]:
@@ -41,8 +41,8 @@ class _StreamReader:
                 self.left = bs
                 continue
             ln = len(bs)
-            bs += chunk[:size-len(bs)]
-            self.left = chunk[size-ln:]
+            bs += chunk[: size - len(bs)]
+            self.left = chunk[size - ln:]
             return bs
         return bs
 
