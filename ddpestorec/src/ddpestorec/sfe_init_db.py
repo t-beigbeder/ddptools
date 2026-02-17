@@ -6,25 +6,13 @@ import sys
 import grpc
 
 from sfegrpc import estore_pb2_grpc, estore_pb2
+from . import main
 
 
 logger = logging.getLogger("sfe_init_db")
 
 
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--host")
-    parser.add_argument("-p", "--port")
-    args = parser.parse_args()
-    host = args.host if args.host else "localhost"
-    port = args.port if args.port else "8080"
-    logging.basicConfig(
-        format="%(asctime)s %(name)s %(levelname)-8s %(message)s",
-        datefmt="%Y-%m-%d %H:%M:%S",
-        stream=sys.stderr,
-    )
-    logger.setLevel(os.getenv("LOG_LEVEL", "INFO"))
-    drop = True if os.getenv("ESTORE_DROP_DB", "0").lower() not in ("", "0", "false") else False
+def run(host: str, port: str, drop: bool, category: str):
     logger.info(f"main: calling CreateRequest on {host}:{port} drop {drop}")
     with grpc.insecure_channel(f"{host}:{port}") as channel:
         stub = estore_pb2_grpc.EstoreStub(channel)
@@ -34,5 +22,18 @@ def main():
     logger.info("main: exiting")
 
 
+def _parser(parser: argparse.ArgumentParser) -> None:
+    drop = True if os.getenv("ESTORE_DROP_DB", "0").lower() not in ("", "0", "false") else False
+
+
+def _doer(
+    _: logging.Logger, host: str, port: str, args: argparse.Namespace
+) -> int:
+    drop = True if os.getenv("ESTORE_DROP_DB", "0").lower() not in ("", "0", "false") else False
+    run(host, port, drop, args.category)
+    return 0
+
+
 if __name__ == "__main__":
-    main()
+    status = main.main(logger, _parser, _doer)
+    sys.exit(status)
