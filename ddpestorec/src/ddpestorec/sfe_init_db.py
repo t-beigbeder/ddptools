@@ -23,7 +23,7 @@ def run(host: str, port: str, drop: bool):
 
 
 def _parser(parser: argparse.ArgumentParser) -> None:
-    parser.add_argument("--drop", action=argparse.BooleanOptionalAction, default=False)
+    parser.add_argument("--drop")
 
 
 def _doer(
@@ -32,7 +32,8 @@ def _doer(
     if os.getenv("ESTORE_DROP_DB") is None:
         drop = args.drop
     else:
-        drop = True if os.getenv("ESTORE_DROP_DB", "0").lower() not in ("", "0", "false") else False
+        drop = os.getenv("ESTORE_DROP_DB", "0")
+    drop = drop.lower() not in ("", "0", "false", "none") if drop else False
     run(host, port, drop)
     return 0
 

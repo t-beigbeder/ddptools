@@ -51,5 +51,5 @@ coverage:	## launch QA tests for HTML coverage only
 .PHONY: runc
 runc: export PYTHONPATH=src
 runc:	## run the grpc client to test
-	echo $(VENV)/bin/python -m ddpestorec.sfe_init_db -p 8181
-	$(VENV)/bin/python -m ddpestorec.sfe_ope_cli -p 8181 --shutdown 2
+	$(VENV)/bin/python -m ddpestorec.sfe_init_db -p 8181 --drop 0
+	echo $(VENV)/bin/python -m ddpestorec.sfe_ope_cli -p 8181 --shutdown 2
