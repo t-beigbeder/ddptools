@@ -47,3 +47,9 @@ mypy:	## launch QA tests on mypy only
 coverage:	## launch QA tests for HTML coverage only
 	$(VENV)/bin/coverage run --source=src/ -m pytest src/
 	$(VENV)/bin/coverage html
+
+.PHONY: runc
+runc: export PYTHONPATH=src
+runc:	## run the grpc client to test
+	echo $(VENV)/bin/python -m ddpestorec.sfe_init_db -p 8181
+	$(VENV)/bin/python -m ddpestorec.sfe_ope_cli -p 8181 --shutdown 2
