@@ -8,6 +8,14 @@ from typing import Callable
 logger = logging.getLogger("estorec_main")
 
 
+def is_drop_set(args: argparse.Namespace) -> bool:
+    if os.getenv("ESTORE_DROP_DB") is None:
+        drop = args.drop
+    else:
+        drop = os.getenv("ESTORE_DROP_DB", "0")
+    return drop.lower() not in ("", "0", "false", "none") if drop else False
+
+
 def parser_for_test(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--status", default="0")
 

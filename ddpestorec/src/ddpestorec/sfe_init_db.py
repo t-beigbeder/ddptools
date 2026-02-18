@@ -1,6 +1,5 @@
 import argparse
 import logging
-import os
 import sys
 
 import grpc
@@ -29,12 +28,7 @@ def _parser(parser: argparse.ArgumentParser) -> None:
 def _doer(
     _: logging.Logger, host: str, port: str, args: argparse.Namespace
 ) -> int:
-    if os.getenv("ESTORE_DROP_DB") is None:
-        drop = args.drop
-    else:
-        drop = os.getenv("ESTORE_DROP_DB", "0")
-    drop = drop.lower() not in ("", "0", "false", "none") if drop else False
-    run(host, port, drop)
+    run(host, port, main.is_drop_set(args))
     return 0
 
 
