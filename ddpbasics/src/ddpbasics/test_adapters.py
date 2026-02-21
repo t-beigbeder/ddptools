@@ -1,6 +1,6 @@
 import pytest
 
-from .adapters import file_streamer, stream_reader
+from .adapters import file_streamer, stream_reader, url_streamer
 
 
 @pytest.fixture
@@ -46,3 +46,11 @@ def test_fs_sr(get_ifs) -> None:
     sr2b = stream_reader(fs2b)
     with open(i2, "rb") as fd:
         assert fd.read() == _read_all_by(sr2b, 8192)
+
+
+def test_url_sr() -> None:
+    _UT = "https://blog.otvl.org"
+    us = url_streamer(_UT)
+    sr = stream_reader(us)
+    html = sr.read().decode()
+    assert "<!DOCTYPE html>" in html and "<title>Blog</title>" in html and "</html>" in html

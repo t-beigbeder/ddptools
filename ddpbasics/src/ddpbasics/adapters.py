@@ -1,10 +1,20 @@
 from typing import Any, Generator
+import urllib.request
 
 
 def file_streamer(fp: str, size: int = 128 * 1024) -> Generator[bytes]:
     with open(fp, "rb") as fd:
         while True:
             bs = fd.read(size)
+            if not len(bs):
+                return
+            yield bs
+
+
+def url_streamer(url: str, size: int = 128 * 1024) -> Generator[bytes]:
+    with urllib.request.urlopen(url) as is_:
+        while True:
+            bs = is_.read(size)
             if not len(bs):
                 return
             yield bs
