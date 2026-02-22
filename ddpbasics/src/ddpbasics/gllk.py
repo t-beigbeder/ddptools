@@ -20,8 +20,7 @@ def initialize() -> None:
 class _GlDict:
     def __init__(self) -> None:
         global _gldict
-        assert _gllock is not None
-        self.lock = _gllock
+        self.lock = threading.Lock()
         self.d: dict[typing.Any, typing.Any] = dict()
         assert _gldict is None
         _gldict = self
@@ -85,8 +84,7 @@ def GlDict() -> _GlDict:
 class _GlQueue:
     def __init__(self) -> None:
         global _glqueue
-        assert _gllock is not None
-        self.lock = _gllock
+        self.lock = threading.Lock()
         self.queues: dict[str, queue.Queue[bytes]] = dict()
         self.max_value_sizes: dict[str, int] = dict()
         assert _glqueue is None
@@ -100,8 +98,8 @@ class _GlQueue:
             self.max_value_sizes[topic] = max_value_size
 
     def delete(self, topic: str) -> None:
+        self.queues[topic].shutdown(immediate=True)
         with self.lock:
-            self.queues[topic].shutdown(immediate=True)
             del self.queues[topic]
             del self.max_value_sizes[topic]
 
@@ -109,14 +107,12 @@ class _GlQueue:
         return topic in self.queues
 
     def shutdown(self, topic: str, immediate) -> None:
-        with self.lock:
-            self.queues[topic].shutdown(immediate)
+        self.queues[topic].shutdown(immediate)
 
     def put(self, topic: str, value: bytes) -> None:
-        with self.lock:
-            if len(value) >= self.max_value_sizes[topic]:
-                raise ValueError(f"len {len(value)}")
-            self.queues[topic].put(value)
+        if len(value) >= self.max_value_sizes[topic]:
+            raise ValueError(f"len {len(value)}")
+        self.queues[topic].put(value)
 
     def get(self, topic: str) -> bytes | None:
         try:
