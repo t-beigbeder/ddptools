@@ -16,7 +16,7 @@ from . import estoredb
 from . import s3sqix
 
 
-logger = logging.getLogger("server")
+logger = logging.getLogger("es-server")
 
 
 class _Entity:

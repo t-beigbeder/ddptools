@@ -74,10 +74,11 @@ class _GlDict:
 
 def GlDict() -> _GlDict:
     global _gldict
-    assert _gllock is not None
-    with _gllock:
-        if _gldict is None:
-            _gldict = _GlDict()
+    if _gldict is None:
+        assert _gllock is not None
+        with _gllock:
+            if _gldict is None:
+                _gldict = _GlDict()
     return _gldict
 
 
@@ -131,8 +132,9 @@ class _GlQueue:
 
 def GlQueue() -> _GlQueue:
     global _glqueue
-    assert _gllock is not None
-    with _gllock:
-        if _glqueue is None:
-            _glqueue = _GlQueue()
+    if _glqueue is None:
+        assert _gllock is not None
+        with _gllock:
+            if _glqueue is None:
+                _glqueue = _GlQueue()
     return _glqueue
