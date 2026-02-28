@@ -30,6 +30,10 @@ build:	## builds a python package
 pytest:	## launch QA tests with pytest only
 	$(VENV)/bin/pytest src/
 
+.PHONY: pytest-1
+pytest-1:	## launch QA tests with pytest selection only
+	$(VENV)/bin/pytest src/ddpbasics/test_s3utils.py
+
 .PHONY: mypy
 mypy:	## launch QA tests on mypy only
 	$(VENV)/bin/mypy src

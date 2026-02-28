@@ -1,3 +1,4 @@
+import logging
 import threading
 
 import pytest
@@ -16,7 +17,7 @@ def test_gldict() -> None:
         _ = GlDict().get("k")
 
 
-def test_glqueue() -> None:
+def test_glqueue_seq() -> None:
     initialize()
     q = GlQueue()
     q.create("a", 10, 10)
@@ -32,6 +33,77 @@ def test_glqueue() -> None:
     assert not q.exists("a")
     q.create("a", 10, 10)
     q.shutdown("a", True)
+
+
+def test_glqueue_concurrent_pc() -> None:
+    _T = "test_glqueue_concurrent"
+    initialize()
+    q = GlQueue()
+    q.create(_T, 4, 10)
+    assert q.exists(_T)
+
+    def _cons(ix):
+        logger = logging.getLogger(f"_cons#{ix}")
+        while True:
+            logger.info("get")
+            val = q.get(_T)
+            logger.info(f"got: {val}")
+            if val is None:
+                return
+
+    def _prod():
+        logger = logging.getLogger("_prod")
+        for i in range(1000):
+            val = f"val{i}"
+            logger.info(f"put {val}")
+            q.put(_T, f"{val}")
+        q.shutdown(_T, False)
+
+    tp = threading.Thread(target=_prod, daemon=True)
+    tp.start()
+    tcs = []
+    for i in range(10):
+        tcs.append(threading.Thread(target=_cons, daemon=True, args=(i,)))
+        tcs[-1].start()
+    tp.join()
+    for i in range(10):
+        tcs[i].join()
+
+
+def test_glqueue_concurrent_cp() -> None:
+    _T = "test_glqueue_concurrent_cp"
+    initialize()
+    q = GlQueue()
+    q.create(_T, 4, 10)
+    assert q.exists(_T)
+
+    def _cons(ix):
+        logger = logging.getLogger(f"_cons#{ix}")
+        while True:
+            logger.info("get")
+            val = q.get(_T)
+            logger.info(f"got: {val}")
+            if val is None:
+                return
+
+    def _prod():
+        logger = logging.getLogger("_prod")
+        for i in range(1000):
+            val = f"val{i}"
+            logger.info(f"put {val}")
+            q.put(_T, f"{val}")
+        q.shutdown(_T, False)
+    tcs = []
+    for i in range(10):
+        tcs.append(threading.Thread(target=_cons, daemon=True, args=(i,)))
+        tcs[-1].start()
+
+    tp = threading.Thread(target=_prod, daemon=True)
+    tp.start()
+    tp.join()
+
+    for i in range(10):
+        tcs[i].join()
 
 
 def test_glnamedlock() -> None:

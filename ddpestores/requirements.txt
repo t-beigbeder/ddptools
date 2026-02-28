@@ -1,5 +1,5 @@
 ../ddpbasics
-boto3>=1.42,<2
+../ddpestorec
 psycopg[binary]>=3.3,<3.4
 grpcio>=1.76,<1.77
 grpcio-tools>=1.76,<1.77

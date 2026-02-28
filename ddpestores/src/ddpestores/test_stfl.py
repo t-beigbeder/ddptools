@@ -152,3 +152,72 @@ def test_queue_with_threads(grpc_stub):
     tp.join()
     _ = stub.Shutdown(stfl_pb2.ShutdownRequest(topic=_TP, immediate=True))
     _ = stub.Delete(stfl_pb2.Topic(topic=_TP))
+
+
+def test_glqueue_concurrent_pc(grpc_stub) -> None:
+    _TP = "test_glqueue_concurrent_pc"
+    stub = grpc_stub["fl_stub"]
+
+    def _cons(ix) -> None:
+        logger = logging.getLogger(f"_cons#{ix}")
+        while True:
+            logger.info("get")
+            val: stfl_pb2.ValueOrNone = stub.Get(stfl_pb2.Topic(topic=_TP))
+            logger.info(f"got: {val}")
+            if val.is_none:
+                return
+
+    def _prod():
+        logger = logging.getLogger("_prod")
+        for i in range(1000):
+            val = f"val{i}"
+            logger.info(f"put {val}")
+            stub.Put(stfl_pb2.TopicValue(topic=_TP, value=val.encode()))
+        stub.Shutdown(stfl_pb2.ShutdownRequest(topic=_TP, immediate=False))
+
+    _ = stub.Create(stfl_pb2.TopicConfig(topic=_TP, size=4, max_value_size=10))
+
+    tp = threading.Thread(target=_prod, daemon=True)
+    tp.start()
+    tcs = []
+    for i in range(8):
+        tcs.append(threading.Thread(target=_cons, daemon=True, args=(i,)))
+        tcs[-1].start()
+    tp.join()
+    for i in range(8):
+        tcs[i].join()
+
+
+def test_glqueue_concurrent_cp(grpc_stub) -> None:
+    _TP = "test_glqueue_concurrent_cp"
+    stub = grpc_stub["fl_stub"]
+
+    def _cons(ix) -> None:
+        logger = logging.getLogger(f"_cons#{ix}")
+        while True:
+            logger.info("get")
+            val: stfl_pb2.ValueOrNone = stub.Get(stfl_pb2.Topic(topic=_TP))
+            logger.info(f"got: {val}")
+            if val.is_none:
+                return
+
+    def _prod():
+        logger = logging.getLogger("_prod")
+        for i in range(1000):
+            val = f"val{i}"
+            logger.info(f"put {val}")
+            stub.Put(stfl_pb2.TopicValue(topic=_TP, value=val.encode()))
+        stub.Shutdown(stfl_pb2.ShutdownRequest(topic=_TP, immediate=False))
+
+    _ = stub.Create(stfl_pb2.TopicConfig(topic=_TP, size=4, max_value_size=10))
+    tcs = []
+    for i in range(8):
+        tcs.append(threading.Thread(target=_cons, daemon=True, args=(i,)))
+        tcs[-1].start()
+
+    tp = threading.Thread(target=_prod, daemon=True)
+    tp.start()
+    tp.join()
+
+    for i in range(8):
+        tcs[i].join()
