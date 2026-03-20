@@ -7,4 +7,4 @@ No doc yet but test_* modules are good entry points.
 - 0.1.1: typed
 - 0.7: url_streamer
 - 0.7.2: fix deadlock
-- 0.7.3: other
+- 0.7.4: new adapters and cache utilies

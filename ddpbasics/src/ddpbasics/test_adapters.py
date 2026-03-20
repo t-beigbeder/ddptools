@@ -1,6 +1,6 @@
 import pytest
 
-from .adapters import file_streamer, stream_reader, url_streamer
+from .adapters import file_streamer, stream_reader, url_streamer, StringOThenI
 
 
 @pytest.fixture
@@ -54,3 +54,10 @@ def test_url_sr() -> None:
     sr = stream_reader(us)
     html = sr.read().decode()
     assert "<!DOCTYPE html>" in html and "<title>Blog</title>" in html and "</html>" in html
+
+
+def test_StringOThenI():
+    soti1 = StringOThenI()
+    _C1 = "l1\nl2\n"
+    soti1.write(_C1)
+    assert str(soti1) == _C1

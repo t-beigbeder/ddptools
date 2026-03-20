@@ -1,3 +1,4 @@
+import io
 from typing import Any, Generator
 import urllib.request
 
@@ -59,3 +60,24 @@ class _StreamReader:
 
 def stream_reader(streamer: Generator[bytes]) -> Any:
     return _StreamReader(streamer)
+
+
+class StringOThenI(io.StringIO):
+    def __init__(
+        self, initial_value: str | None = "", newline: str | None = "\n"
+    ) -> None:
+        super().__init__(initial_value, newline)
+        self.seeked = False
+
+    def write(self, s: str, /) -> int:
+        self.seeked = False
+        return super().write(s)
+
+    def read(self, size: int | None = -1, /) -> str:
+        if not self.seeked:
+            self.seek(0)
+            self.seeked = True
+        return super().read(size)
+
+    def __str__(self) -> str:
+        return self.read()

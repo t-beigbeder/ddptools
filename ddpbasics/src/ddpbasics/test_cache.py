@@ -1,10 +1,17 @@
 from hashlib import sha256
+import os
+import os.path
 from random import randbytes
 from typing import Generator
 
 import pytest
 
-from . import cache, gllk
+from . import cache, gllk, s3utils
+
+
+_UT = "https://blog.otvl.org"
+_BK = "otvl-tests"
+_PF = "otvl-tests"
 
 
 # Use cases
@@ -141,3 +148,38 @@ def test_s3_large_file_cache(get_xlf) -> None:
         h.update(bs)
     assert d.get(f"cnt3:{get_xlf[0]}") == 1
     assert h.digest().hex() == get_xlf[1]
+
+
+def test_url_cache_reader():
+    p3 = (_UT, "test_cache", ".html")
+    cfp = cache.get_cache_path_for(*p3)
+    if os.path.exists(cfp):
+        os.remove(cfp)
+    rr, ex = cache.url_cache_reader_with_status(*p3)
+    bs = rr.read()
+    assert not ex and len(bs) > 0
+    os.remove(cfp)
+    bs2 = cache.url_cache_reader(*p3).read()
+    assert len(bs2) == len(bs)
+    bs3 = cache.url_cache_reader(*p3).read()
+    assert len(bs3) == len(bs2)
+    rr, ex = cache.url_cache_reader_with_status(*p3)
+    assert ex
+
+
+def test_url_s3_cache_reader():
+    p3 = (_UT, "test_cache", ".html")
+    ocp = cache.get_s3_cache_path_for(*p3)
+    p3p = (_BK, ocp, _PF)
+    s3utils.delete(*p3p)
+    p5 = (_BK, _PF, _UT, "test_cache", ".html")
+    rr, ex = cache.url_s3_cache_reader_with_status(*p5)
+    bs = rr.read()
+    assert not ex and len(bs) > 0
+    s3utils.delete(*p3p)
+    bs2 = cache.url_s3_cache_reader(*p5).read()
+    assert len(bs2) == len(bs)
+    bs3 = cache.url_s3_cache_reader(*p5).read()
+    assert len(bs3) == len(bs2)
+    rr, ex = cache.url_s3_cache_reader_with_status(*p5)
+    assert ex

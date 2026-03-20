@@ -1,12 +1,13 @@
 import functools
 import hashlib
+import os.path
 import pathlib
 import queue
 import threading
 from typing import Generator
+import typing
 
-from ddpbasics import adapters, gllk, xdg
-from . import s3utils
+from ddpbasics import adapters, gllk, s3utils, xdg
 
 
 COPY_BUFSIZE = 64 * 1024
@@ -81,6 +82,7 @@ def _s3_stream_uploader(
             if chunk is None:
                 return
             yield chunk
+
     s3utils.upload(_streamer(), bucket, object_path, profile_name)
 
 
@@ -117,3 +119,41 @@ def s3_cache_streamer(
     finally:
         if nl:
             gllk.GlDict().named_lock_delete(ln)
+
+
+def url_cache_reader_with_status(
+    url: str, category: str, suffix: str
+) -> tuple[typing.Any, bool]:
+    p3 = (url, category, suffix)
+    path = get_cache_path_for(*p3)
+    exists = os.path.exists(path)
+    return (
+        adapters.stream_reader(cache_streamer(*p3, adapters.url_streamer(url))),
+        exists,
+    )
+
+
+def url_cache_reader(url: str, category: str, suffix: str) -> typing.Any:
+    rr, _ = url_cache_reader_with_status(url, category, suffix)
+    return rr
+
+
+def url_s3_cache_reader_with_status(
+    bucket: str, profile_name: str | None, url: str, category: str, suffix: str
+) -> tuple[typing.Any, bool]:
+    p3 = (url, category, suffix)
+    object_path = get_s3_cache_path_for(*p3)
+    exists = s3utils.exists(bucket, object_path, profile_name)
+    return (
+        adapters.stream_reader(
+            s3_cache_streamer(bucket, profile_name, *p3, adapters.url_streamer(url))
+        ),
+        exists,
+    )
+
+
+def url_s3_cache_reader(
+    bucket: str, profile_name: str | None, url: str, category: str, suffix: str
+) -> tuple[typing.Any, bool]:
+    rr, _ = url_s3_cache_reader_with_status(bucket, profile_name, url, category, suffix)
+    return rr
